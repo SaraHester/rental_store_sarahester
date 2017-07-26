@@ -15,6 +15,9 @@ def open_inventory():
     return inventory
 def update_inventory(dict_inventory):
     with open('inventory.txt', 'w') as file:
-        str_inventory = core.dict_to_str(inventory)
+        str_inventory = core.dict_to_str(dict_inventory)
         file.write(str_inventory)
+def update_quantity(dict_inventory, number):
+    core.rent(dict_inventory, number)
+    update_inventory(dict_inventory)
 

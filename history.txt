@@ -1,1 +1,1 @@
-Name of item, price per day, day checked out, day checked in
+Name of item, price per day, time checked out, time checked in

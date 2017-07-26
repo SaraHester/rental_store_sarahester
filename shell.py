@@ -18,14 +18,14 @@ def current_time():
 def main():
     inventory = disk.open_inventory()
     dict_inventory = core.make_dict(inventory)
-    print(dict_inventory)
     print("WELCOME to Game-Flix!!")
     #Start Branch
     answer = input('Are you a 1.customer or 2.employee?\n->')
     if answer == '1':
         make_pretty(dict_inventory)
-        num = input('Which one would you like to check out?\n->')
-        # name = covert_num_to_name(num)
+        number = int(input('Which one would you like to check out?\n->'))
+        disk.update_quantity(dict_inventory, number)
+
     elif answer == '2':
         print('OK')
 

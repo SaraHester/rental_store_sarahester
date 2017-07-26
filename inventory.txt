@@ -1,13 +1,11 @@
 Name of item, price per day, quantity, replacement value
-Call of Duty 3.00, 19, 35
+Call of Duty, 3.00, 19, 35
 Deadman Wonderland(season 1), 5.00, 25, 45.00
 Need for Speed:Most Wanted, 2.05, 14, 24.00
 Mario Kart, 4.12, 12, 34
-Parasyte(season 1), 4.90
+Parasyte(season 1), 4.90, 24, 35
 Skyrim, 3.4, 23, 40.00
 Sword Art Online(season 1), 4.50, 32, 54.00
 Sword Art Online(season 2, 4.70, 34, 54.00
 Tokyo Ghoul(season 1), 5.00, 48, 56.00
 Tokyo Ghoul(season 2), 5.00, 47, 56.00
-
-

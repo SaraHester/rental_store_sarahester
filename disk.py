@@ -4,10 +4,10 @@ def open_log():
         file.readline()
         log = file.readlines()
     return log
-def append_log():
+# def append_log():
 def open_inventory():
     with open('inventory.txt', 'r') as file:
         file.readline()
         inventory = file.readlines()
     return inventory
-def append_inventory():
+# def append_inventory():

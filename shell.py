@@ -8,10 +8,8 @@ def slow_type(t):
         sys.stdout.flush()
         time.sleep(random.random()*10.0/500)
 def make_pretty(dict_inventory):
-    number = 0
-    for item in dict_inventory:
-        number += 1
-        phrase = "\n" + str(number) +'. '+ str(dict_inventory[item]['name']) + ':\n\tPrice per day: ' + str(dict_inventory[item]['price'])+' In stock: '+ str(dict_inventory[item]['quantity']) + ' Replacement value: '+ str(dict_inventory[item]['value'])
+    for i in range(1,len(dict_inventory) + 1):
+        phrase = "\n" + str(dict_inventory[i]['number']) +'. '+ str(dict_inventory[i]['name']) + ':\n\tPrice per day: ' + str(dict_inventory[i]['price'])+' In stock: '+ str(dict_inventory[i]['quantity']) + ' Replacement value: '+ str(dict_inventory[i]['value'])
         for item in phrase:
             slow_type(item)
 def current_time():

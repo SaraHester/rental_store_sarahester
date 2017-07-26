@@ -1,4 +1,4 @@
 
-1, Call of Duty, 3.0, 14, 35.0
-2, Deadman Wonderland(season 1), 5.0, 20, 45.0
-3, Need for Speed:Most Wanted, 2.05, 13, 24.0
+1, Call of Duty, 3.0, 11, 35.0
+2, Deadman Wonderland(season 1), 5.0, 15, 45.0
+3, Need for Speed:Most Wanted, 2.05, 11, 24.0

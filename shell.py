@@ -22,10 +22,18 @@ def main():
     #Start Branch
     answer = input('Are you a 1.customer or 2.employee?\n->')
     if answer == '1':
+        in_out = input('Are you 1.checking out or 2.returning?')
         make_pretty(dict_inventory)
-        number = int(input('Which one would you like to check out?\n->'))
-        disk.update_quantity(dict_inventory, number)
-
+        number = int(input('Which one?\n->'))
+        name = dict_inventory[number]['name']
+        print(name)
+        if in_out == '1':
+            # time_out = input('What time are you checking out?\n')
+            # time_in = input('What time did you return it?\n')
+            days = input('How many days are you renting?')
+            disk.check_out(dict_inventory,name, number, days)
+        # elif in_out =='2':
+        #     disk.check_in(dict_inventory, number, time_in)
     elif answer == '2':
         print('OK')
 

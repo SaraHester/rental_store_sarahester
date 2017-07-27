@@ -22,7 +22,7 @@ def make_log_dict(log):
 def make_log_str(dict_log):
     str_log = ''
     for line in dict_log:
-        str_log += str(dict_log[line]['id']) + ', ' + str(dict_log[line]['name']) + ', ' + str(dict_log[line]['time checked out']) + ', ' + str(dict_log[line]['time checked in']) + ', '+ str(dict_log[line]['total'])
+        str_log += '\n' + str(dict_log[line]['id']) + ', ' + str(dict_log[line]['name']) + ', ' + str(dict_log[line]['time checked out']) + ', ' + str(dict_log[line]['time checked in']) + ', '+ str(dict_log[line]['total'])
     return str_log
 
 def log_line(dict_log, i_d_guess, time_in, total):

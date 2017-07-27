@@ -6,6 +6,7 @@ def open_log():
         log = file.readlines()
     return log
 
+
 def append_log(i_d, name, time_out, time_in, total):
     with open('history.txt', 'a') as file:
          file.write('\n'+ str(i_d) + ', ' + str(name) + ', ' + str(time_out) +', ' + str(time_in) + ', ' + str(total))

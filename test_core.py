@@ -17,7 +17,18 @@ def test_dict_ineven_to_str():
 def test_make_log_dict():
     log = ['84742666, Deadman Wonderland(season 1), 2017-07-27 11:06:12.902951, N/A, N/A\n', '04470289, Call of Duty, 2017-07-27 11:06:43.142199, 2017-07-27 11:07:29.249265, 16.295\n', '44030379, Call of Duty, 2017-07-27 11:06:18.614966, N/A, N/A']
     assert core.make_log_dict(log) == {
-        '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': '16.295\n', 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265'}, 
+        '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': '16.295', 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265'}, 
         '44030379': {'time checked out': '2017-07-27 11:06:18.614966', 'total': 'N/A', 'name': 'Call of Duty', 'id': '44030379', 'time checked in': 'N/A'}, 
-        '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A\n', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A'}
+        '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A'}
+        }
+def test_log_line():
+    dict_log ={
+        '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': '16.295', 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265'}, 
+        '44030379': {'time checked out': '2017-07-27 11:06:18.614966', 'total': 'N/A', 'name': 'Call of Duty', 'id': '44030379', 'time checked in': 'N/A'}, 
+        '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A'}
+        }
+    assert core.log_line(dict_log, '44030379', '2017-07-27 11:06:12.90295', 40) =={
+        '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': '16.295', 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265'}, 
+        '44030379': {'time checked out': '2017-07-27 11:06:18.614966', 'total': 40, 'name': 'Call of Duty', 'id': '44030379', 'time checked in': '2017-07-27 11:06:12.90295'}, 
+        '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A'}
         }

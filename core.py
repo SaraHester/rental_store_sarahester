@@ -3,7 +3,7 @@ def make_inven_dict(inventory):
     '''[] -> {}'''
     dict_inventory = {}
     for line in inventory:
-        number, item, price, quantity, value = line.split(', ')
+        number, item, price, quantity, value = line.strip().split(', ')
         dict_inventory[int(number)] = {'number': number, 'name': item, 'price': float(price), 'quantity': int(quantity), 'value': float(value)}
     return dict_inventory
 
@@ -18,7 +18,7 @@ def make_log_dict(log):
     '''[] -> {}'''
     dict_log = {}
     for line in log:
-        i_d, name, time_out, time_in, total = line.split(', ')
+        i_d, name, time_out, time_in, total = line.strip().split(', ')
         dict_log[i_d] = {'id': i_d, 'name': name, 'time checked out': time_out , 'time checked in': time_in, 'total': total}
     return dict_log
 
@@ -51,7 +51,7 @@ def rent_cost(dict_inventory, number, days):
 
 def deposit(dict_inventory, number):
     '''{}, int -> {}'''
-     return dict_inventory[number]['value'] * .10
+    return dict_inventory[number]['value'] * .10
 
 def final_cost(dict_inventory, number, days):
     '''{}, int, int -> {}'''

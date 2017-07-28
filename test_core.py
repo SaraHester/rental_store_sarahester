@@ -73,3 +73,13 @@ def test_deposit():
         }
     assert core.deposit(inventory, 2) == 4.5
 
+def test_sales_tax():
+    assert core.sales_tax(29.5) == 2.0650000000000004
+
+def test_final_cost():
+    inventory = {
+        1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}, 
+        2: {'quantity': 20, 'number': '2', 'price': 5.0, 'value': 45.0, 'name': 'Deadman Wonderland(season 1)'},
+        3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
+        }
+    assert core.final_cost(inventory, 2, 5) == 31.565

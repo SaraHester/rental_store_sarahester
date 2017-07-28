@@ -53,14 +53,14 @@ def deposit(dict_inventory, number):
     '''{}, int -> {}'''
     return dict_inventory[number]['value'] * .10
 
+def sales_tax(cost):
+    '''int-> int'''
+    return cost * .07
+
 def final_cost(dict_inventory, number, days):
     '''{}, int, int -> int'''
     cost = deposit(dict_inventory, number) + rent_cost(dict_inventory, number, days) 
     return  cost +  sales_tax(cost)
-
-def sales_tax(cost):
-    '''int-> int'''
-    return cost * .07
 
 def check(dict_log, i_d_guess):
     '''{}, str -> str'''

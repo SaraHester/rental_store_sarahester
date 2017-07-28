@@ -99,9 +99,9 @@ def test_check():
         '44030379': {'time checked out': '2017-07-27 11:06:18.614966', 'total': 'N/A', 'name': 'Call of Duty', 'id': '44030379', 'time checked in': 'N/A'}, 
         '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A'}
         }
-    assert core.check(dict_log, '44030379') == '44030379'
-    assert core.check(dict_log, '4403037') == None
-    assert core.check(dict_log, '77667565') == None
+    assert core.check(dict_log, '44030379') == True
+    assert core.check(dict_log, '4403037') == False
+    assert core.check(dict_log, '77667565') == False
 
 def test_check_quantity():
     inventory = {

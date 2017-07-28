@@ -43,9 +43,9 @@ def input_in_out():
             print('Invalid Input')
 def input_number():
     while True:
-        number = input('\nWhich one?\n->')
-        if number.isdigit():
-            return int(number)
+        choice = input('\nWhich one?\n->')
+        if choice.isdigit():
+            return choice
         else:
             print('Invalid Input')
 def input_days():
@@ -56,10 +56,10 @@ def input_days():
         else:
             print('Sorry, either that\'s not a valid date or you can\'t rent it that many days')
 
-def input_guess(dict_log):
+def input_guess(dict_log, i_d):
     while True:
         i_d_guess = input('What is your log id?')
-        if i_d_guess.isdigit() and core.check(dict_log, i_d_guess):
+        if i_d_guess.isdigit() and core.check(dict_log, i_d, i_d_guess):
             return i_d_guess
         else:
             print('Sorry, That\'s not a valid id')

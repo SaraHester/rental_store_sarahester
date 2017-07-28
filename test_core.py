@@ -32,3 +32,25 @@ def test_log_line():
         '44030379': {'time checked out': '2017-07-27 11:06:18.614966', 'total': 40, 'name': 'Call of Duty', 'id': '44030379', 'time checked in': '2017-07-27 11:06:12.90295'}, 
         '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A'}
         }
+def test_rent_out():
+    inventory = {
+        1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}, 
+        2: {'quantity': -14, 'number': '2', 'price': 5.0, 'value': 45.0, 'name': 'Deadman Wonderland(season 1)'},
+        3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
+        }
+    assert core.rent_out(inventory, 2) == {
+        1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}, 
+        2: {'quantity': -15, 'number': '2', 'price': 5.0, 'value': 45.0, 'name': 'Deadman Wonderland(season 1)'},
+        3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
+        }
+def test_rent_in():
+    inventory = {
+        1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}, 
+        2: {'quantity': 20, 'number': '2', 'price': 5.0, 'value': 45.0, 'name': 'Deadman Wonderland(season 1)'},
+        3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
+        }
+    assert core.rent_in(inventory, 2) == {
+        1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}, 
+        2: {'quantity': 21, 'number': '2', 'price': 5.0, 'value': 45.0, 'name': 'Deadman Wonderland(season 1)'},
+        3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
+        }

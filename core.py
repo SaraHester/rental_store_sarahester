@@ -42,7 +42,7 @@ def rent_out(dict_inventory, number):
 
 def rent_in(dict_inventory, number):
     '''{}, int ->'''
-    dict_inventory[number]['quantity'] -= 1
+    dict_inventory[number]['quantity'] += 1
     return dict_inventory
 
 def rent_cost(dict_inventory, number, days):

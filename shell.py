@@ -7,9 +7,14 @@ def slow_type(t):
         sys.stdout.write(l)
         sys.stdout.flush()
         time.sleep(random.random()*10.0/500)
-def make_pretty(dict_inventory):
+def make_pretty_inventory(dict_inventory):
     for i in range(1,len(dict_inventory) + 1):
         print("\n" + str(dict_inventory[i]['number']) +'. '+ str(dict_inventory[i]['name']) + ':\n\tPrice per day: ' + str(dict_inventory[i]['price'])+' In stock: '+ str(dict_inventory[i]['quantity']) + ' Replacement value: '+ str(dict_inventory[i]['value']))
+
+def make_pretty_log(dict_log):
+    for i in range(1,len(dict_log) + 1):
+        print('\n' + str(dict_log[i]['number']) + ', ' +  str(dict_log[i]['id']) + 'Name: ' + str(dict_log[i]['Name'] + 'Time checked out:' + str(dict_log[i]['time checked out'])) + 'Time checked in:' + str(dict_log[i]['time checked out']) + 'Total:' + str(dict_log[i]['total']))
+
 def random_i_d(dict_log):
     while True:
         i_d = ''
@@ -19,7 +24,7 @@ def random_i_d(dict_log):
         if i_d != dict_log.keys():
             return i_d
 def current_time():
-    return datetime.datetime.now()
+    return '{:%Y-%m-%d %H:%M}'.format(datetime.datetime.now())
 
 def input_answer():
     while True:
@@ -58,7 +63,14 @@ def input_guess(dict_log):
             return i_d_guess
         else:
             print('Sorry, That\'s not a valid id')
-
+def input_password():
+    password = '7D9n3'
+    while True:
+        password_guess = input('PLease enter the password\n->')
+        if password_guess == password:
+            return password
+        else:
+            print('\nINCORRECT PASSWORD\n')
 ##make main
 def main():
     inventory = disk.open_inventory()
@@ -71,7 +83,7 @@ def main():
     #customer
     if answer == '1':
         in_out = input_in_out()
-        make_pretty(dict_inventory)
+        make_pretty_inventory(dict_inventory)
         
         #check oout
         if in_out == '1':
@@ -97,11 +109,12 @@ def main():
             print('Your total is:', core.final_cost(dict_inventory, number, days))
     #employee
     elif answer == '2':
+        input_password()
         option = input('What do you want to do? 1.Manage stock. 2. Check history')
         if option == '1':
-            print(log)
+             make_pretty_inventory(dict_inventory)
         elif option == '2':
-            make_pretty(dict_inventory)
+            make_pretty_log(dict_log)
 
 if __name__=='__main__':
     main()

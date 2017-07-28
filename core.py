@@ -35,6 +35,9 @@ def log_line(dict_log, i_d, time_in, total):
     dict_log[i_d]['total'] = total
     return dict_log
 
+def new_line(number, name, price, quantity, value):
+    line = '\n' + str(number) + ', ' + str(name) + ', ' + str(price) + ', ' + str(quantity) + ', ' + str(value)
+    return line
 def rent_out(dict_inventory, number):
     ''''{}, int -> {}'''
     dict_inventory[number]['quantity'] -= 1

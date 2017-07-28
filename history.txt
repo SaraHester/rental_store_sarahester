@@ -1,5 +1,0 @@
-
-1, 54240213, Parasyte(season 1), 2017-07-28 13:24:52.591360, 2017-07-28 13:26:34.719574, 36.93900000000001
-2, 78596099, Deadman Wonderland(season 1), 2017-07-28 13:21:29.774556, N/A, N/A
-3, 45671495, Deadman Wonderland(season 1), 2017-07-28 14:16, N/A, N/A
-2, 28969354, Deadman Wonderland(season 1), 2017-07-28 14:18, N/A, N/A

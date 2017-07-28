@@ -42,6 +42,9 @@ def test_log_line():
         '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A'}
         }
 
+def test_new_line():
+    assert core.new_line(2, 'Alice in Wonderland', 3.4, 24, 12) == '\n2, Alice in Wonderland, 3.4, 24, 12'
+
 def test_rent_out():
     inventory = {
         1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}, 

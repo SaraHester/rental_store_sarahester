@@ -110,11 +110,17 @@ def main():
     #employee
     elif answer == '2':
         input_password()
-        option = input('What do you want to do? 1.Manage stock. 2. Check history')
+        option = input('What do you want to do? 1.Manage stock. 2. Check history 3. Add to inventory')
         if option == '1':
              make_pretty_inventory(dict_inventory)
         elif option == '2':
             make_pretty_log(dict_log)
+        elif option ==- '3':
+            name = input_name()
+            price = input_price()
+            quantity = input_quantity
+            value = input_value()
+            disk.append_inventory(number, name, price, quantity, value)
 
 if __name__=='__main__':
     main()

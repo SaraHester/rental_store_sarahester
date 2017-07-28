@@ -25,8 +25,8 @@ def make_log_dict(log):
 def make_log_str(dict_log):
     '''dict{} -> str'''
     str_log = ''
-    for line in dict_log:
-        str_log += '\n' + str(dict_log[line]['id']) + ', ' + str(dict_log[line]['name']) + ', ' + str(dict_log[line]['time checked out']) + ', ' + str(dict_log[line]['time checked in']) + ', '+ str(dict_log[line]['total'])
+    for line in sorted(dict_log):
+        str_log += '\n' + str(dict_log[line]['id']) + ', ' + str(dict_log[line]['name']) + ', ' + str(dict_log[line]['time checked out']) + ', ' + str(dict_log[line]['time checked in']) + ', ' + str(dict_log[line]['total'])
     return str_log
 
 def log_line(dict_log, i_d_guess, time_in, total):
@@ -69,3 +69,10 @@ def check(dict_log, i_d_guess):
             return i_d_guess
     else:
         return None
+
+def check_quantity(dict_inventory):
+    for item in dict_inventory:
+        if dict_inventory[item]['quantity'] <= 1:
+            return dict_inventory[item]['quantity']
+    else:
+        return 3

@@ -9,9 +9,7 @@ def slow_type(t):
         time.sleep(random.random()*10.0/500)
 def make_pretty(dict_inventory):
     for i in range(1,len(dict_inventory) + 1):
-        phrase = "\n" + str(dict_inventory[i]['number']) +'. '+ str(dict_inventory[i]['name']) + ':\n\tPrice per day: ' + str(dict_inventory[i]['price'])+' In stock: '+ str(dict_inventory[i]['quantity']) + ' Replacement value: '+ str(dict_inventory[i]['value'])
-        for item in phrase:
-            slow_type(item)
+        print("\n" + str(dict_inventory[i]['number']) +'. '+ str(dict_inventory[i]['name']) + ':\n\tPrice per day: ' + str(dict_inventory[i]['price'])+' In stock: '+ str(dict_inventory[i]['quantity']) + ' Replacement value: '+ str(dict_inventory[i]['value']))
 def random_i_d(dict_log):
     while True:
         i_d = ''
@@ -22,6 +20,45 @@ def random_i_d(dict_log):
             return i_d
 def current_time():
     return datetime.datetime.now()
+
+def input_answer():
+    while True:
+        answer = input('Are you a 1.customer or 2.employee?\n->')
+        if answer == '1' or answer == '2':
+            return answer
+        else:
+            print('Invalid Input')
+
+def input_in_out():
+    while True:
+        in_out = input('Are you 1.checking out or 2.returning?\n->')
+        if in_out == '1' or in_out == '2':
+            return in_out
+        else:
+            print('Invalid Input')
+def input_number():
+    while True:
+        number = input('\nWhich one?\n->')
+        if number.isdigit():
+            return int(number)
+        else:
+            print('Invalid Input')
+def input_days():
+    while True:
+        days = input('How may days did you check it out?\n->')
+        if days.isdigit() and int(days) < 10:
+            return int(days)
+        else:
+            print('Sorry, either that\'s not a valid date or you can\'t rent it that many days')
+
+def input_guess(dict_log):
+    while True:
+        i_d_guess = input('What is your log id?')
+        if i_d_guess.isdigit() and core.check(dict_log, i_d_guess):
+            return i_d_guess
+        else:
+            print('Sorry, That\'s not a valid id')
+
 ##make main
 def main():
     inventory = disk.open_inventory()
@@ -30,27 +67,31 @@ def main():
     dict_log = core.make_log_dict(log)
     print("WELCOME to Game-Flix!!")
     #Start Branch
-    answer = input('Are you a 1.customer or 2.employee?\n->')
+    answer = input_answer()
     #customer
     if answer == '1':
-        in_out = input('Are you 1.checking out or 2.returning?')
+        in_out = input_in_out()
         make_pretty(dict_inventory)
-        number = int(input('Which one?\n->'))
+        
         #check oout
         if in_out == '1':
+            number = input_number()
             i_d = random_i_d(dict_log)
             name = dict_inventory[number]['name']
             time_out = current_time()
-            disk.check_out(dict_inventory, i_d, name, number, time_out)
-            print('item checked out:', name)
-            print('The deposit is:', core.deposit(dict_inventory, number))
-            print('Thank you. Your log id number is', i_d)
+            if core.check_quantity(dict_inventory) > 1:
+                disk.check_out(dict_inventory, i_d, name, number, time_out)
+                print('item checked out:', name)
+                print('The deposit is:', core.deposit(dict_inventory, number))
+                print('Thank you. Your log id number is', i_d)
+            else:
+                print('Sorry, were out of that item')
         # check in
         elif in_out =='2':
             #make helper function
-            days = input('How may days did you check it out?\n->')
-            i_d_guess = input('What is your log id?')
-            i_d_guess = core.check(dict_log, i_d_guess)
+            number = input_number()
+            days = input_days()
+            i_d_guess = input_guess(dict_log)
             time_in = current_time()
             disk.check_in(dict_inventory, dict_log, number, time_in, i_d_guess,days)
             print('Your total is:', core.final_cost(dict_inventory, number, days))

@@ -66,13 +66,13 @@ def check(dict_log, i_d_guess):
     '''{}, str -> str'''
     for number in dict_log:
         if i_d_guess in dict_log.keys():
-            return i_d_guess
+            return True
     else:
-        return None
+        return False
 
 def check_quantity(dict_inventory):
     for item in dict_inventory:
         if dict_inventory[item]['quantity'] <= 1:
-            return dict_inventory[item]['quantity']
+            return 0
     else:
         return 3

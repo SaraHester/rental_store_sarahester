@@ -54,7 +54,7 @@ def deposit(dict_inventory, number):
     return dict_inventory[number]['value'] * .10
 
 def final_cost(dict_inventory, number, days):
-    '''{}, int, int -> {}'''
+    '''{}, int, int -> int'''
     cost = deposit(dict_inventory, number) + rent_cost(dict_inventory, number, days) 
     return  cost +  sales_tax(cost)
 

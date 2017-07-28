@@ -83,3 +83,13 @@ def test_final_cost():
         3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
         }
     assert core.final_cost(inventory, 2, 5) == 31.565
+
+def test_check():
+    dict_log ={
+        '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': '16.295', 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265'}, 
+        '44030379': {'time checked out': '2017-07-27 11:06:18.614966', 'total': 'N/A', 'name': 'Call of Duty', 'id': '44030379', 'time checked in': 'N/A'}, 
+        '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A'}
+        }
+    assert core.check(dict_log, '44030379') == '44030379'
+    assert core.check(dict_log, '4403037') == None
+    assert core.check(dict_log, '77667565') == None

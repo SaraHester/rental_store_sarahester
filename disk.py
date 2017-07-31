@@ -9,11 +9,11 @@ def open_log():
 
 def append_log(i_d, name, rent_charge, days,time_out, time_in, total):
     with open('history.txt', 'a') as file:
-         file.write('\n'+ str(i_d) + ', ' + str(rent_charge) + ', ' +str(days)  + ', ' +str(name) + ', ' + str(time_out) +', ' + str(time_in) + ', ' + str(total))
+         file.write('\n'+ str(i_d) + ', ' + str(name) + ', ' + str(rent_charge) + ', ' +str(days)  + ', ' + str(time_out) +', ' + str(time_in) + ', ' + str(total))
 
-def rewrite_checkin(dict_log, i_d, rent_charge, days, time_in, total):
+def rewrite_checkin(dict_log, i_d,rent_charge, days, time_in, total):
     with open('history.txt', 'w') as file:
-        new_log = core.log_line(dict_log, i_d,rent_charge, days, time_in, total)
+        new_log = core.log_line(dict_log, i_d, rent_charge, days, time_in, total)
         new_log = core.make_log_str(dict_log)
         file.write(new_log)
 

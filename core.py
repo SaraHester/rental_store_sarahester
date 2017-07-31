@@ -82,3 +82,11 @@ def check_quantity(dict_inventory):
             return 0
     else:
         return 3
+def change_inventory(dict_inventory, number, trait, new_trait):
+    if trait == '1':
+        dict_inventory[number]['name'] = new_trait
+    elif trait == '2':
+        dict_inventory[number]['price'] = new_trait
+    elif trait == '3':
+        dict_inventory[number]['value'] = new_trait
+    return dict_inventory

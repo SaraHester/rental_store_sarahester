@@ -82,6 +82,18 @@ def add_to_inventory():
     quantity = input_number('How many of this item do you have?\n->')
     value = input('What is the replacement value of this item?\n->')
     disk.append_inventory(name, price, quantity, value)
+def change_inventory(dict_inventory):
+    status = ''
+    while status != '2':
+        number = input_number('Which item do you want to update?\n->')
+        trait = input_choice(4, '1. Name 2.Price 3. Replacement value')
+        if trait == '1':
+            new_trait = input_word('What would you like to change it to?\n->')
+        else:
+            new_trait = input_number('What would you like to change it to?\n->')
+        dict_inventory = core.change_inventory(dict_inventory, number, trait, new_trait)
+        disk.update_inventory(dict_inventory)
+        status = input_choice(3, '1. Change something else, 2. Go back to Main Menu\n->')
 ##make main
 def main():
     inventory = disk.open_inventory()
@@ -126,8 +138,12 @@ def main():
         check_inven_or_log(dict_inventory, dict_log)
 
     elif answer == '3':
+            print('Main Menu')
             option = input_choice(3, '1. Add to inventory 2. Change or update inventory 3. Clear log')
             if option == '1':
                 add_to_inventory()
+            if option == '2':
+                make_pretty_inventory(dict_inventory)
+                change_inventory(dict_inventory)
 if __name__=='__main__':
     main()

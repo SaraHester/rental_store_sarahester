@@ -43,3 +43,4 @@ def check_in(dict_inventory, dict_log, number, time_in, i_d_guess, days):
     update_inventory(dict_inventory)
     final_cost = core.final_cost(dict_inventory, number, days)
     rewrite_checkin(dict_log, i_d_guess, time_in, float(final_cost - core.deposit(dict_inventory, number)))
+

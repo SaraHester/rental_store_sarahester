@@ -102,6 +102,7 @@ def change_inventory(dict_inventory):
         dict_inventory = core.change_inventory(dict_inventory, number, trait, new_trait)
         disk.update_inventory(dict_inventory)
         status = input_choice(3, '1. Change something else, 2. Go back to Main Menu\n->')
+
 ##make main
 def main():
     inventory = disk.open_inventory()
@@ -147,11 +148,19 @@ def main():
 
     elif answer == '3':
             print('Main Menu')
-            option = input_choice(3, '1. Add to inventory 2. Change or update inventory 3. Clear log')
+            option = input_choice(4, '1. Add to inventory 2. Change or update inventory 3. Clear log')
             if option == '1':
                 add_to_inventory()
-            if option == '2':
+            elif option == '2':
                 make_pretty_inventory(dict_inventory)
                 change_inventory(dict_inventory)
+            elif option == '3':
+                clear = input_choice(3, 'Are you sure you want to clear\n 1. Yes  2.No\n->')
+                if clear == '1':
+                    disk.clear_log()
+                else:
+                    print('Ok. Is there anything else you want to do?')
+                    
+
 if __name__=='__main__':
     main()

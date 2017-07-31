@@ -120,3 +120,10 @@ def test_check_quantity():
         3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
         }
     assert core.check_quantity(inventory2) == 3
+
+def test_change_inventory():
+    inventory = {1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}}
+    assert core.change_inventory(inventory, 1, '1', 'COD') == {1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'COD'}}
+    assert core.change_inventory(inventory, 1, '2', 4) == {1: {'quantity': -9, 'number': '1', 'price': 4.0, 'value': 35.0, 'name': 'COD'}}
+    assert core.change_inventory(inventory, 1, '3', 34) == {1: {'quantity': -9, 'number': '1', 'price': 4.0, 'value': 34.0, 'name': 'COD'}}
+    assert core.change_inventory(inventory, 1, '4', 34) ==  None

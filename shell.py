@@ -45,14 +45,22 @@ def input_word(string):
         else:
             print('Invalid Name')
 
-def input_number(string):
+def input_int(string):
     while True:
         number = input(string)
         if number.isdigit():
             return int(number)
         else:
             print('Invalid Input')
-
+def input_float(string):
+    while True:
+        number = input(string)
+        if number.count('.') == 1:
+            number.remove('.')
+            if number.isdigit:
+                return number
+        else:
+            print('Invalid Input')
 
 def input_guess(dict_log, string):
     while True:
@@ -90,7 +98,7 @@ def change_inventory(dict_inventory):
         if trait == '1':
             new_trait = input_word('What would you like to change it to?\n->')
         else:
-            new_trait = input_number('What would you like to change it to?\n->')
+            new_trait = input_float('What would you like to change it to?\n->')
         dict_inventory = core.change_inventory(dict_inventory, number, trait, new_trait)
         disk.update_inventory(dict_inventory)
         status = input_choice(3, '1. Change something else, 2. Go back to Main Menu\n->')

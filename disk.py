@@ -9,7 +9,7 @@ def open_log():
 
 def append_log(i_d, name, rent_charge, days,time_out, time_in, total):
     with open('history.txt', 'a') as file:
-         file.write('\n'+ str(i_d) + ', ' + str(rent_charge) + ', ' +str(deposit)  + ', ' +str(name) + ', ' + str(time_out) +', ' + str(time_in) + ', ' + str(total))
+         file.write('\n'+ str(i_d) + ', ' + str(rent_charge) + ', ' +str(days)  + ', ' +str(name) + ', ' + str(time_out) +', ' + str(time_in) + ', ' + str(total))
 
 def rewrite_checkin(dict_log, i_d, rent_charge, days, time_in, total):
     with open('history.txt', 'w') as file:
@@ -33,15 +33,16 @@ def append_inventory(name, price, quantity, value):
         new_line = core.new_line(name, price, quantity, value)
         file.write(new_line)
 
-def check_out(dict_inventory, i_d,name, number, time_out, days):
+def check_out(dict_inventory, i_d,name, number, time_out):
     core.rent_out(dict_inventory, number)
     update_inventory(dict_inventory)
-    append_log(i_d, name, 'N/A', 'N/A', time_out, 'N/A', total)
+    append_log(i_d, name, 'N/A', 'N/A', time_out, 'N/A', 'N/A')
     
-def check_in(dict_inventory, dict_log, number, time_in, i_d_guess, rent_charge, days):
+def check_in(dict_inventory, dict_log, number, time_in, i_d_guess, days):
     core.rent_in(dict_inventory, number)
     update_inventory(dict_inventory)
     final_cost = core.final_cost(dict_inventory, number, days)
+    rent_charge = core.rent_cost(dict_inventory, number, days)
     rewrite_checkin(dict_log, i_d_guess, rent_charge, days, time_in, float(final_cost - core.deposit(dict_inventory, number)))
 
 def clear_log():

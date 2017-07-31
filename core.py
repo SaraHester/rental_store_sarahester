@@ -30,6 +30,10 @@ def make_log_str(dict_log):
     for line in sorted(dict_log):
         str_log += '\n' + str(dict_log[line]['id']) + ', ' +  str(dict_log[line]['name']) + ', ' +  str(dict_log[line]['days']) + ', '+ str(dict_log[line]['rent charge']) + ', ' + str(dict_log[line]['time checked out']) + ', ' + str(dict_log[line]['time checked in']) + ', ' + str(dict_log[line]['total'])
     return str_log
+def update_dict_log(dict_log, i_d, name, time_out):
+    dict_log[i_d] = {'id': id, 'name': name,'days': 'N/A', 'rent charge': 'N/A','time checked out': time_out , 'time checked in': 'N/A', 'total': 'N/A'}
+    return dict_log
+
 
 def log_line(dict_log, i_d, rent_charge, days, time_in, total):
     '''{}, str, str, float -> {}'''

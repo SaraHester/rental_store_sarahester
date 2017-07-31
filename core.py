@@ -70,8 +70,8 @@ def final_cost(dict_inventory, number, days):
 
 def check(dict_log, i_d_guess):
     '''{}, str -> str'''
-    for number in dict_log:
-        if i_d_guess == dict_log[number]['id']:
+    for line in dict_log:
+        if str(i_d_guess) == str(line):
             return True
     else:
         return False

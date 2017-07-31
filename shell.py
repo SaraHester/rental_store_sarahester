@@ -26,66 +26,62 @@ def random_i_d(dict_log):
 def current_time():
     return '{:%Y-%m-%d %H:%M}'.format(datetime.datetime.now())
 
-def input_answer():
+
+
+def input_choice(number, string):
     while True:
-        answer = input('Are you a 1.customer or 2.employee?\n->')
-        if answer == '1' or answer == '2':
-            return answer
+        choice = input(string)
+        for i in range(number):
+            if choice == str(i):
+                return choice
         else:
             print('Invalid Input')
 
-def input_in_out():
+def input_word(string):
     while True:
-        in_out = input('Are you 1.checking out or 2.returning?\n->')
-        if in_out == '1' or in_out == '2':
-            return in_out
+        word = input(string)
+        if word.isalpha():
+            return word
         else:
-            print('Invalid Input')
-def input_number():
-    while True:
-        choice = input('\nWhich one?\n->')
-        if choice.isdigit():
-            return int(choice)
-        else:
-            print('Invalid Input')
-def input_days():
-    while True:
-        days = input('How may days did you check it out?\n->')
-        if days.isdigit() and int(days) < 10:
-            return int(days)
-        else:
-            print('Sorry, either that\'s not a valid date or you can\'t rent it that many days')
+            print('Invalid Name')
 
-def input_guess(dict_log, i_d):
+def input_number(string):
     while True:
-        i_d_guess = input('What is your log id?')
-        if i_d_guess.isdigit() and core.check(dict_log, i_d, i_d_guess):
+        number = input(string)
+        if number.isdigit():
+            return int(number)
+        else:
+            print('Invalid Input')
+
+
+def input_guess(dict_log, string):
+    while True:
+        i_d_guess = input(string)
+        if core.check(dict_log,i_d_guess):
             return i_d_guess
         else:
             print('Sorry, That\'s not a valid id')
-def input_password():
-    password = '7D9n3'
+
+def input_password(password):
     while True:
         password_guess = input('PLease enter the password\n->')
         if password_guess == password:
             return password
         else:
             print('\nINCORRECT PASSWORD\n')
-def input_name():
-    while True:
-        name = input('What is the name of the item?\n->')
-        if name.isalpha():
-            return name
-        else:
-            print('Invalid Name')
 
-def input_quantity():
-    while True:
-        quantity = input('How many of this item do you have?\n->')
-        if quantity.isdigit():
-            return quantity
-        else:
-            print('Invalid Quantity')
+def check_inven_or_log(dict_inventory, dict_log):
+        option = input('What do you want to do? 1.Manage stock. 2. Check history\n->')
+        if option == '1':
+             make_pretty_inventory(dict_inventory)
+        elif option == '2':
+            make_pretty_log(dict_log)
+def add_to_inventory():
+    name = input_word('What is the name of the item?\n->')
+    price = input('What is the price of the item?\n')
+    quantity = input_number('How many of this item do you have?\n->')
+    value = input('What is the replacement value of this item?\n->')
+    disk.append_inventory(name, price, quantity, value)
 ##make main
 def main():
     inventory = disk.open_inventory()
@@ -94,15 +90,15 @@ def main():
     dict_log = core.make_log_dict(log)
     print("WELCOME to Game-Flix!!")
     #Start Branch
-    answer = input_answer()
+    answer = input_choice(4, 'Are you 1. customer 2. Employee 3. Administrator?\n->')
     #customer
     if answer == '1':
-        in_out = input_in_out()
+        in_out = input_choice(3, 'Are you 1. checking out 2. returning?\n->')
         make_pretty_inventory(dict_inventory)
         
         #check oout
         if in_out == '1':
-            number = input_number()
+            number = input_number("Which one would you like to check out\n->")
             i_d = random_i_d(dict_log)
             name = dict_inventory[number]['name']
             time_out = current_time()
@@ -116,26 +112,22 @@ def main():
         # check in
         elif in_out =='2':
             #make helper function
-            number = input_number()
-            days = input_days()
-            i_d_guess = input_guess(dict_log)
+            print(dict_inventory)
+            print(dict_log)
+            number = input_number('Which one are you returning?\n->')
+            days = input_number('How many days did you rent it?\n->')
+            i_d_guess = input_guess(dict_log, 'What is your id number?\n->')
             time_in = current_time()
-            disk.check_in(dict_inventory, dict_log, number, time_in, i_d_guess,days)
+            disk.check_in(dict_inventory, dict_log, number, time_in, i_d_guess, days)
             print('Your total is:', core.final_cost(dict_inventory, number, days))
     #employee
     elif answer == '2':
-        input_password()
-        option = input('What do you want to do? 1.Manage stock. 2. Check history 3. Add to inventory')
-        if option == '1':
-             make_pretty_inventory(dict_inventory)
-        elif option == '2':
-            make_pretty_log(dict_log)
-        elif option == '3':
-            name = input_name()
-            price = input('What is the price of the item?\n')
-            quantity = input_quantity()
-            value = input('What is the replacement value of this item?\n->')
-            disk.append_inventory(name, price, quantity, value)
+        input_password('no')
+        check_inven_or_log(dict_inventory, dict_log)
 
+    elif answer == '3':
+            option = input_choice(3, '1. Add to inventory 2. Change or update inventory 3. Clear log')
+            if option == '1':
+                add_to_inventory()
 if __name__=='__main__':
     main()

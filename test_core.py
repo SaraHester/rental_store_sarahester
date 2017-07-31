@@ -16,32 +16,21 @@ def test_dict_ineven_to_str():
     assert core.dict_inven_to_str(inventory) == '\nCall of Duty, 3.0, -9, 35.0\nDeadman Wonderland(season 1), 5.0, -13, 45.0\nNeed for Speed:Most Wanted, 2.05, 8, 24.0'
 
 def test_make_log_dict():
-    log = ['84742666, Deadman Wonderland(season 1), 2017-07-27 11:06:12.902951, N/A, N/A\n', '04470289, Call of Duty, 2017-07-27 11:06:43.142199, 2017-07-27 11:07:29.249265, 16.295\n', '44030379, Call of Duty, 2017-07-27 11:06:18.614966, N/A, N/A']
+    log = ['84742666, Deadman Wonderland(season 1), N/A, N/A, 2017-07-27 11:06:12.902951, N/A, N/A']
     assert core.make_log_dict(log) == {
-        '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': '16.295', 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265'}, 
-        '44030379': {'time checked out': '2017-07-27 11:06:18.614966', 'total': 'N/A', 'name': 'Call of Duty', 'id': '44030379', 'time checked in': 'N/A'}, 
-        '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A'}
-        }
+        '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A', 'rent charge': 'N/A', 'days': 'N/A' }}
 
 def test_make_log_str():
-    log = {
-        '44030379': {'time checked out': '2017-07-27 11:06:18.614966', 'total': 'N/A', 'name': 'Call of Duty', 'id': '44030379', 'time checked in': 'N/A'},
-        '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': '16.295', 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265'}, 
-        '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A'}
-        }
-    assert core.make_log_str(log) == '\n04470289, Call of Duty, 2017-07-27 11:06:43.142199, 2017-07-27 11:07:29.249265, 16.295\n44030379, Call of Duty, 2017-07-27 11:06:18.614966, N/A, N/A\n84742666, Deadman Wonderland(season 1), 2017-07-27 11:06:12.902951, N/A, N/A'
+    log = {'04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': 16.295, 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265', 'days': 5, 'rent charge': 13.4}}
+    assert core.make_log_str(log) == '\n04470289, Call of Duty, 5, 13.4, 2017-07-27 11:06:43.142199, 2017-07-27 11:07:29.249265, 16.295'
 def test_log_line():
     dict_log ={
-        '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': '16.295', 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265'}, 
-        '44030379': {'time checked out': '2017-07-27 11:06:18.614966', 'total': 'N/A', 'name': 'Call of Duty', 'id': '44030379', 'time checked in': 'N/A'}, 
-        '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A'}
+        '44030379': {'time checked out': '2017-07-27 11:06:43.142199', 'total': 'N/A', 'name': 'Call of Duty', 'id': '04470289', 'time checked in': 'N/A', 'days': 'N/A', 'rent charge': 'N/A'}, 
+        '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': 16.295, 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265', 'days': 5, 'rent charge': 13.4}}
+    assert core.log_line(dict_log, '44030379', 5.4, 6, '2017-07-27 11:06:12.90295', 40) == {
+        '44030379': {'time checked out': '2017-07-27 11:06:43.142199', 'total': 40, 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:06:12.90295', 'days': 6, 'rent charge': 5.4}, 
+        '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': 16.295, 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265', 'days': 5, 'rent charge': 13.4}
         }
-    assert core.log_line(dict_log, '44030379', '2017-07-27 11:06:12.90295', 40) =={
-        '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': '16.295', 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265'}, 
-        '44030379': {'time checked out': '2017-07-27 11:06:18.614966', 'total': 40, 'name': 'Call of Duty', 'id': '44030379', 'time checked in': '2017-07-27 11:06:12.90295'}, 
-        '84742666': {'time checked out': '2017-07-27 11:06:12.902951', 'total': 'N/A', 'name': 'Deadman Wonderland(season 1)', 'id': '84742666', 'time checked in': 'N/A'}
-        }
-
 def test_new_line():
     assert core.new_line('Alice in Wonderland', 3.4, 24, 12) == '\nAlice in Wonderland, 3.4, 24, 12'
 

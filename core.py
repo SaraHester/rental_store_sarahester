@@ -20,21 +20,23 @@ def make_log_dict(log):
     '''[] -> {}'''
     dict_log = {}
     for line in log:
-        i_d, name, time_out, time_in, total = line.strip().split(', ')
-        dict_log[str(i_d)] = {'id': i_d, 'name': name, 'time checked out': time_out , 'time checked in': time_in, 'total': total}
+        i_d, name, days, rent_charge,time_out, time_in, total = line.strip().split(', ')
+        dict_log[str(i_d)] = {'id': i_d, 'name': name,'days': days, 'rent charge': rent_charge,'time checked out': time_out , 'time checked in': time_in, 'total': total}
     return dict_log
 
 def make_log_str(dict_log):
     '''dict{} -> str'''
     str_log = ''
     for line in sorted(dict_log):
-        str_log += '\n' + str(dict_log[line]['id']) + ', ' + str(dict_log[line]['name']) + ', ' + str(dict_log[line]['time checked out']) + ', ' + str(dict_log[line]['time checked in']) + ', ' + str(dict_log[line]['total'])
+        str_log += '\n' + str(dict_log[line]['id']) + ', ' +  str(dict_log[line]['name']) + ', ' +  str(dict_log[line]['days']) + ', '+ str(dict_log[line]['rent charge']) + ', ' + str(dict_log[line]['time checked out']) + ', ' + str(dict_log[line]['time checked in']) + ', ' + str(dict_log[line]['total'])
     return str_log
 
-def log_line(dict_log, i_d, time_in, total):
+def log_line(dict_log, i_d, rent_charge, days, time_in, total):
     '''{}, str, str, float -> {}'''
     dict_log[i_d]['time checked in'] = time_in
     dict_log[i_d]['total'] = total
+    dict_log[i_d]['rent charge'] = rent_charge
+    dict_log[i_d]['days'] = days
     return dict_log
 
 def new_line(name, price, quantity, value):

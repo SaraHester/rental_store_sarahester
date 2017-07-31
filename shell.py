@@ -1,12 +1,14 @@
 #Print and input go here
 ##Import core and disk
-import core, disk, sys, random, time, datetime
+import core, disk, sys, random, time, datetime, cool_letters
 ##make helper functions
 def slow_type(t):
     for l in t:
         sys.stdout.write(l)
         sys.stdout.flush()
         time.sleep(random.random()*10.0/500)
+def print_intro():
+    cool_letters.print_cool_letters('Welcome To Game-Flix')
 def make_pretty_inventory(dict_inventory):
     for i in range(1,len(dict_inventory) + 1):
         print("\n" + str(dict_inventory[i]['number']) +'. '+ str(dict_inventory[i]['name']) + ':\n\tPrice per day: ' + str(dict_inventory[i]['price'])+' In stock: '+ str(dict_inventory[i]['quantity']) + ' Replacement value: '+ str(dict_inventory[i]['value']))
@@ -87,13 +89,13 @@ def check_inven_or_log(dict_inventory, dict_log):
 def add_to_inventory():
     name = input_word('What is the name of the item?\n->')
     price = input('What is the price of the item?\n')
-    quantity = input_number('How many of this item do you have?\n->')
+    quantity = input_int('How many of this item do you have?\n->')
     value = input('What is the replacement value of this item?\n->')
     disk.append_inventory(name, price, quantity, value)
 def change_inventory(dict_inventory):
     status = ''
     while status != '2':
-        number = input_number('Which item do you want to update?\n->')
+        number = input_int('Which item do you want to update?\n->')
         trait = input_choice(4, '1. Name 2.Price 3. Replacement value')
         if trait == '1':
             new_trait = input_word('What would you like to change it to?\n->')
@@ -102,6 +104,54 @@ def change_inventory(dict_inventory):
         dict_inventory = core.change_inventory(dict_inventory, number, trait, new_trait)
         disk.update_inventory(dict_inventory)
         status = input_choice(3, '1. Change something else, 2. Go back to Main Menu\n->')
+def random_barcode_lines(length, height):
+    '''int-> str'''
+    choices =  "▎", "▏", "▍", "▌", "█", "▌", "▌"
+    code = []
+    for i in range(length):
+        code.append(random.choice(choices))
+    return''.join(code)
+    
+
+
+def rand_numbers(length):
+    numbers = "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
+    code = []
+    for i in range(length):
+        code.append(random.choice(numbers))
+    line = ''.join(code)
+    return '\n║\t   ║'.join(line for _ in range(1))
+
+def receipt(i_d, dict_log, dict_inventory, number, date):
+    '''str, float, float, str -> str'''
+    code = random_barcode_lines(20, 2)
+    print("\tHere is your receipt.\n\t😄Have a good day!😄")
+    print("\n")
+    print("\t╔══════════════════════════════════════════════╗\n\t║     \t",cool_letters.print_cool_letters('Game-Flix'), "      ║")
+    print("\t║----------------------------------------------║")
+    print("\t║Item:", dict_log[i_d]['name'].ljust(35), "║")
+    print("\t║Price per day:", str(dict_inventory[number]['price']).ljust(29), "║")
+    print("\t║Days checked out:", str(dict_log[i_d]['days'].ljust(29), "║")
+    print("\t║Rent Charge:", str(dict_log[i_d]['rent charge']), "".ljust(37), "║")
+    print("\t║Sales Tax: 0.07                               ║")
+    print("\t║Total sales:", str(dict_log[i_d]['total']) , ''.ljust(31), "║" )
+    print("\t║Time checked out:", str(dict_log[i_d]['time checked out']), "".ljust(29), "║")
+    print("\t║Time checked in:", str(dict_log[i_d]['time checked in']), "".ljust(27), "║")
+    print("\t║Transaction time:", date, " ║" )
+    print("\t║--------------------------------------------- ║" )
+    print("\t║            ",code, "         ║")
+    print("\t║            ",code, "         ║")
+    print("\t║            ",rand_numbers(20),"            ║")
+    print("\t║                                              ║")
+    print("\t║                                              ║")
+    print("\t║==============================================║")
+    print("\t║                                              ║" )
+    print("\t║EARN YOUR CHANCE AT $500!!!!!                 ║")
+    print("\t║`just go to the link below`                   ║" )
+    print("\t║www.earnfreemoney.org                         ║" )
+    print("\t║==============================================║" )
+    print("\t╚══════════════════════════════════════════════╝")
+    print("\n")
 
 ##make main
 def main():
@@ -109,7 +159,7 @@ def main():
     dict_inventory = core.make_inven_dict(inventory)
     log = disk.open_log()
     dict_log = core.make_log_dict(log)
-    print("WELCOME to Game-Flix!!")
+    print_intro()
     #Start Branch
     answer = input_choice(4, 'Are you 1. customer 2. Employee 3. Administrator?\n->')
     #customer
@@ -119,15 +169,13 @@ def main():
         
         #check oout
         if in_out == '1':
-            number = input_number("Which one would you like to check out\n->")
+            number = input_int("Which one would you like to check out\n->")
             i_d = random_i_d(dict_log)
             name = dict_inventory[number]['name']
             time_out = current_time()
             if core.check_quantity(dict_inventory) > 1:
                 disk.check_out(dict_inventory, i_d, name, number, time_out)
-                print('item checked out:', name)
-                print('The deposit is:', core.deposit(dict_inventory, number))
-                print('Thank you. Your log id number is', i_d)
+                receipt(dict_inventory, number, time_out)
             else:
                 print('Sorry, were out of that item')
         # check in
@@ -135,12 +183,12 @@ def main():
             #make helper function
             print(dict_inventory)
             print(dict_log)
-            number = input_number('Which one are you returning?\n->')
-            days = input_number('How many days did you rent it?\n->')
+            number = input_int('Which one are you returning?\n->')
+            days = input_int('How many days did you rent it?\n->')
             i_d_guess = input_guess(dict_log, 'What is your id number?\n->')
             time_in = current_time()
             disk.check_in(dict_inventory, dict_log, number, time_in, i_d_guess, days)
-            print('Your total is:', core.final_cost(dict_inventory, number, days))
+            check_in_receipt(i_d_guess, dict_log, dict_inventory, number, time_in)
     #employee
     elif answer == '2':
         input_password('no')

@@ -28,9 +28,9 @@ def update_inventory(dict_inventory):
         str_inventory = core.dict_inven_to_str(dict_inventory)
         file.write(str_inventory)
 
-def append_inventory():
+def append_inventory(name, price, quantity, value):
     with open('inventory.txt', 'a') as file:
-        new_line = core.line_to_str(number, name, price, quantity, value)
+        new_line = core.new_line(name, price, quantity, value)
         file.write(new_line)
 
 def check_out(dict_inventory, i_d,name, number, time_out):

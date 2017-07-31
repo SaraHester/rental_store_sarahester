@@ -1,11 +1,11 @@
 import core
 
 def test_make_inven_dict():
-    inventory = ['1, Call of Duty, 3.0, -9, 35.0\n', '2, Deadman Wonderland(season 1), 5.0, -13, 45.0\n', '3, Need for Speed:Most Wanted, 2.05, 8, 24.0']
+    inventory = ['Call of Duty, 3.0, -9, 35.0\n','Deadman Wonderland(season 1), 5.0, -13, 45.0\n', 'Need for Speed:Most Wanted, 2.05, 8, 24.0']
     assert core.make_inven_dict(inventory) == {
-        1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}, 
-        2: {'quantity': -13, 'number': '2', 'price': 5.0, 'value': 45.0, 'name': 'Deadman Wonderland(season 1)'},
-        3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
+        1: {'quantity': -9, 'number': 1, 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}, 
+        2: {'quantity': -13, 'number': 2, 'price': 5.0, 'value': 45.0, 'name': 'Deadman Wonderland(season 1)'},
+        3: {'quantity': 8, 'number': 3, 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
         }
 def test_dict_ineven_to_str():
     inventory = {
@@ -13,7 +13,7 @@ def test_dict_ineven_to_str():
         2: {'quantity': -13, 'number': '2', 'price': 5.0, 'value': 45.0, 'name': 'Deadman Wonderland(season 1)'},
         3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
         }
-    assert core.dict_inven_to_str(inventory) == '\n1, Call of Duty, 3.0, -9, 35.0\n2, Deadman Wonderland(season 1), 5.0, -13, 45.0\n3, Need for Speed:Most Wanted, 2.05, 8, 24.0'
+    assert core.dict_inven_to_str(inventory) == '\nCall of Duty, 3.0, -9, 35.0\nDeadman Wonderland(season 1), 5.0, -13, 45.0\nNeed for Speed:Most Wanted, 2.05, 8, 24.0'
 
 def test_make_log_dict():
     log = ['84742666, Deadman Wonderland(season 1), 2017-07-27 11:06:12.902951, N/A, N/A\n', '04470289, Call of Duty, 2017-07-27 11:06:43.142199, 2017-07-27 11:07:29.249265, 16.295\n', '44030379, Call of Duty, 2017-07-27 11:06:18.614966, N/A, N/A']
@@ -43,7 +43,7 @@ def test_log_line():
         }
 
 def test_new_line():
-    assert core.new_line(2, 'Alice in Wonderland', 3.4, 24, 12) == '\n2, Alice in Wonderland, 3.4, 24, 12'
+    assert core.new_line('Alice in Wonderland', 3.4, 24, 12) == '\nAlice in Wonderland, 3.4, 24, 12'
 
 def test_rent_out():
     inventory = {

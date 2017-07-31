@@ -45,7 +45,7 @@ def input_number():
     while True:
         choice = input('\nWhich one?\n->')
         if choice.isdigit():
-            return choice
+            return int(choice)
         else:
             print('Invalid Input')
 def input_days():
@@ -71,6 +71,21 @@ def input_password():
             return password
         else:
             print('\nINCORRECT PASSWORD\n')
+def input_name():
+    while True:
+        name = input('What is the name of the item?\n->')
+        if name.isalpha():
+            return name
+        else:
+            print('Invalid Name')
+
+def input_quantity():
+    while True:
+        quantity = input('How many of this item do you have?\n->')
+        if quantity.isdigit():
+            return quantity
+        else:
+            print('Invalid Quantity')
 ##make main
 def main():
     inventory = disk.open_inventory()
@@ -115,12 +130,12 @@ def main():
              make_pretty_inventory(dict_inventory)
         elif option == '2':
             make_pretty_log(dict_log)
-        elif option ==- '3':
+        elif option == '3':
             name = input_name()
-            price = input_price()
-            quantity = input_quantity
-            value = input_value()
-            disk.append_inventory(number, name, price, quantity, value)
+            price = input('What is the price of the item?\n')
+            quantity = input_quantity()
+            value = input('What is the replacement value of this item?\n->')
+            disk.append_inventory(name, price, quantity, value)
 
 if __name__=='__main__':
     main()

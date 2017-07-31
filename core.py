@@ -1,9 +1,11 @@
 # all logical functions go here
 def make_inven_dict(inventory):
     '''[] -> {}'''
+    number = 0
     dict_inventory = {}
     for line in inventory:
-        number, item, price, quantity, value = line.strip().split(', ')
+        number += 1
+        item, price, quantity, value = line.strip().split(', ')
         dict_inventory[int(number)] = {'name': item, 'number': number, 'price': float(price), 'quantity': int(quantity), 'value': float(value)}
     return dict_inventory
 
@@ -11,7 +13,7 @@ def dict_inven_to_str(dict_inventory):
     '''dict{} -> str'''
     str_inventory = ''
     for item in dict_inventory:
-        str_inventory += '\n' + str(dict_inventory[item]['number']) + ', ' + str(dict_inventory[item]['name']) + ', ' +  str(dict_inventory[item]['price']) + ', ' +  str(dict_inventory[item]['quantity']) + ', ' +  str(dict_inventory[item]['value'])
+        str_inventory += '\n' + str(dict_inventory[item]['name']) + ', ' +  str(dict_inventory[item]['price']) + ', ' +  str(dict_inventory[item]['quantity']) + ', ' +  str(dict_inventory[item]['value'])
     return str_inventory
 
 def make_log_dict(log):
@@ -35,9 +37,10 @@ def log_line(dict_log, i_d, time_in, total):
     dict_log[i_d]['total'] = total
     return dict_log
 
-def new_line(number, name, price, quantity, value):
-    line = '\n' + str(number) + ', ' + str(name) + ', ' + str(price) + ', ' + str(quantity) + ', ' + str(value)
+def new_line(name, price, quantity, value):
+    line = '\n' + str(name) + ', ' + str(price) + ', ' + str(quantity) + ', ' + str(value)
     return line
+
 def rent_out(dict_inventory, number):
     ''''{}, int -> {}'''
     dict_inventory[number]['quantity'] -= 1

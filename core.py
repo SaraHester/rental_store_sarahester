@@ -81,12 +81,11 @@ def check(dict_log, i_d_guess):
     else:
         return False
 
-def check_quantity(dict_inventory):
-    for item in dict_inventory:
-        if dict_inventory[item]['quantity'] <= 1:
-            return 0
+def check_quantity(dict_inventory, number):
+    if dict_inventory[number]['quantity'] > 0:
+            return True
     else:
-        return 3
+        return False
 def change_inventory(dict_inventory, number, trait, new_trait):
     if trait == '1':
         dict_inventory[number]['name'] = new_trait

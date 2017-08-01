@@ -99,19 +99,21 @@ def test_check():
         }
     assert core.check(dict_log, '44030379') == True
     assert core.check(dict_log, '4403037') == False
+
+def test_check_quantity():
     inventory = {
         1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}, 
         2: {'quantity': 20, 'number': '2', 'price': 5.0, 'value': 45.0, 'name': 'Deadman Wonderland(season 1)'},
         3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
         }
-    assert core.check_quantity(inventory) == 0
+    assert core.check_quantity(inventory, 2) == True
 
     inventory2 = {
         1: {'quantity': 9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}, 
         2: {'quantity': 20, 'number': '2', 'price': 5.0, 'value': 45.0, 'name': 'Deadman Wonderland(season 1)'},
-        3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
+        3: {'quantity': 0, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
         }
-    assert core.check_quantity(inventory2) == 3
+    assert core.check_quantity(inventory2, 3) == False
 
 def test_change_inventory():
     inventory = {1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}}

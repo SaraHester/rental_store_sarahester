@@ -42,7 +42,8 @@ def input_choice(number, string):
 def input_word(string):
     while True:
         word = input(string)
-        if word.isalpha():
+        word2 = ''.join( character for character in word if  character not in ' .!?()#&*%1234567890')
+        if word2.isalpha():
             return word
         else:
             print('Invalid Name')
@@ -131,9 +132,9 @@ def receipt(i_d, dict_log, dict_inventory, number, date):
     print("\t╔══════════════════════════════════════════════╗")
     print("\t║                   GAME-FLIX                  ║")
     print("\t║----------------------------------------------║")
-    print("\t║Item:", str(dict_inventory[number]['name']).ljust(10 - len(str(dict_inventory[number]['name']))), "║")
+    print("\t║Item:", str(dict_inventory[number]['name']).ljust(41 - len(str(dict_inventory[number]['name']))), "║")
     print("\t║Price per day:", str(dict_inventory[number]['price']).ljust(33 - len(str(dict_inventory[number]['price']))), "║")
-    print("\t║Days checked out:", str(dict_log[i_d]['days']).ljust(29 - len(str(dict_log[i_d]['days']))), "║")
+    print("\t║Days checked out:", str(dict_log[i_d]['days']).ljust(28 - len(str(dict_log[i_d]['days']))), "║")
     print("\t║Rent Charge:", str(dict_log[i_d]['rent charge']), "".ljust(31 - len(str(dict_log[i_d]['rent charge']))), "║")
     print("\t║Sales Tax: 0.07                               ║")
     print("\t║Total sales:", str(dict_log[i_d]['total']) , ''.ljust(31 - len(str(dict_log[i_d]['total']))), "║" )
@@ -174,7 +175,7 @@ def main():
             i_d = random_i_d(dict_log)
             name = dict_inventory[number]['name']
             time_out = current_time()
-            if core.check_quantity(dict_inventory) > 1:
+            if core.check_quantity(dict_inventory, number):
                 deposit = core.deposit(dict_inventory, number)
                 disk.check_out(dict_inventory, i_d, name,number, time_out, deposit)
                 dict_log = core.update_dict_log(dict_log, i_d, name, time_out)
@@ -197,7 +198,7 @@ def main():
 
     elif answer == '3':
             print('Main Menu')
-            option = input_choice(4, '1. Add to inventory 2. Change or update inventory 3. Clear log')
+            option = input_choice(4, '1. Add to inventory 2. Change or update inventory 3. Clear history')
             if option == '1':
                 add_to_inventory()
             elif option == '2':

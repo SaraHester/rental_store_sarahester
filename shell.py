@@ -175,7 +175,8 @@ def main():
             name = dict_inventory[number]['name']
             time_out = current_time()
             if core.check_quantity(dict_inventory) > 1:
-                disk.check_out(dict_inventory, i_d, name,number, time_out)
+                deposit = core.deposit(dict_inventory, number)
+                disk.check_out(dict_inventory, i_d, name,number, time_out, deposit)
                 dict_log = core.update_dict_log(dict_log, i_d, name, time_out)
                 receipt(i_d, dict_log, dict_inventory, number, time_out)
             else:

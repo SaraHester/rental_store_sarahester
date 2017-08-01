@@ -71,8 +71,7 @@ def sales_tax(cost):
 
 def final_cost(dict_inventory, number, days):
     '''{}, int, int -> int'''
-    cost = deposit(dict_inventory, number) + rent_cost(dict_inventory, number, days) 
-    return  cost +  sales_tax(cost)
+    return rent_cost(dict_inventory, number, days) +  sales_tax(rent_cost(dict_inventory, number, days))
 
 def check(dict_log, i_d_guess):
     '''{}, str -> str'''

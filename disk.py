@@ -33,10 +33,10 @@ def append_inventory(name, price, quantity, value):
         new_line = core.new_line(name, price, quantity, value)
         file.write(new_line)
 
-def check_out(dict_inventory, i_d,name, number, time_out):
+def check_out(dict_inventory, i_d,name, number, time_out, deposit):
     core.rent_out(dict_inventory, number)
     update_inventory(dict_inventory)
-    append_log(i_d, name, 'N/A', 'N/A', time_out, 'N/A', 'N/A')
+    append_log(i_d, name, 'N/A', 'N/A', time_out, 'N/A', deposit)
     
 def check_in(dict_inventory, dict_log, number, time_in, i_d_guess, days):
     core.rent_in(dict_inventory, number)

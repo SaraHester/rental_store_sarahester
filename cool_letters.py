@@ -1,6 +1,6 @@
 def print_cool_letters(letters):
     blocks = map(find_cool_letters, letters)
-    print('\n'.join(map('\t'.join, zip(*blocks))))
+    print('\n'.join(map('  '.join, zip(*blocks))))
 def find_cool_letters(letter):
     #CAPITAL LETTERS
     if letter == 'A':
@@ -21,7 +21,7 @@ def find_cool_letters(letter):
                 '▒█▄▄▀ ']
     elif letter == 'E':
         return ['▒█▀▀▀',
-                '▒█▀▀▀',
+                '▒█▀▀',
                 '▒█▄▄▄']
     elif letter == 'F':
         return ['▒█▀▀▀',
@@ -30,7 +30,7 @@ def find_cool_letters(letter):
     elif letter == 'G':
         return ['▒█▀▀█', 
                 '▒█░▄▄', 
-                '▒█▄▄█ ']
+                '▒█▄▄█']
     elif letter == 'H':
         return ['▒█░▒█',
                 '▒█▀▀█', 

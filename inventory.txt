@@ -1,11 +1,12 @@
 
-Call of Duty, 3.0, 15, 35.0
-Deadman Wonderland(season 1), 2.0, 1, 45.0
-Need for Speed:Most Wanted, 2.05, 11, 24.0
-Mario Kart, 4.12, 9, 34.0
-Parasyte(season 1), 4.9, 26, 34.0
-Skyrim, 3.4, 20, 40.0
+Call of Duty, 3.0, 13, 35.0
+Deadman Wonderland(season 1), 2.0, 0, 45.0
+Need for Speed:Most Wanted, 2.05, 0, 24.0
+Mario Kart, 4.12, 7, 34.0
+Parasyte(season 1), 4.9, 24, 34.0
+Skyrim, 3.4, 21, 40.0
 Sword Art Online(season 1), 4.5, 30, 54.0
 Sword Art Online(season 2), 4.7, 31, 54.0
 Tokyo Ghoul(season 1), 5.0, 46, 56.0
-Tokyo Ghoul(season 2), 5.0, 45, 56.0
+Tokyo Ghoul(season 2), 5.0, 47, 56.0
+One Piece: Unlimited Adventure, 2.3, 23, 34.0

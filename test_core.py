@@ -37,8 +37,6 @@ def test_log_line():
         '44030379': {'time checked out': '2017-07-27 11:06:43.142199', 'total': 40, 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:06:12.90295', 'days': 6, 'rent charge': 5.4}, 
         '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': 16.295, 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265', 'days': 5, 'rent charge': 13.4}
         }
-def test_new_line():
-    assert core.new_line('Alice in Wonderland', 3.4, 24, 12) == '\nAlice in Wonderland, 3.4, 24, 12'
 
 def test_rent_out():
     inventory = {

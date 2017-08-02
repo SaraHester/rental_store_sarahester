@@ -10,6 +10,16 @@ def slow_type(t):
 def print_intro():
     cool_letters.print_cool_letters('Welcome To Game-Flix')
 
+def random_i_d(dict_log):
+    while True:
+        i_d = ''
+        choices = '0','1','2','3','4', '5', '6', '7', '8', '9'
+        for i in range(8):
+            i_d += random.choice(choices)
+        if i_d != dict_log.keys():
+            return str(i_d)
+def current_time():
+    return '{:%Y-%m-%d %H:%M}'.format(datetime.datetime.now())
 
 def make_pretty_inventory(dict_inventory):
     for i in range(1,len(dict_inventory) + 1):
@@ -21,16 +31,6 @@ def make_pretty_log(dict_log):
         print(msg)
         # print('\n' + '. ID:' +  str(dict_log[i]['id']) + '\n\tName: ' + str(dict_log[i]['name']) +  ', Days checked out: ' + str(dict_log[i]['days']) + ',Rent Charge: ' + str(dict_log[i]['rent charge'])+++ ', Time checked out:' + str(dict_log[i]['time checked out']) + 'Time checked in:' + str(dict_log[i]['time checked in']) + 'Total:' + str(dict_log[i]['total']))
 
-def random_i_d(dict_log):
-    while True:
-        i_d = ''
-        choices = '0','1','2','3','4', '5', '6', '7', '8', '9'
-        for i in range(8):
-            i_d += random.choice(choices)
-        if i_d != dict_log.keys():
-            return str(i_d)
-def current_time():
-    return '{:%Y-%m-%d %H:%M}'.format(datetime.datetime.now())
 
 
 def input_choice(number, string):
@@ -45,7 +45,7 @@ def input_choice(number, string):
 def input_word(string):
     while True:
         word = input(string)
-        word2 = ''.join( character for character in word if  character not in ' .!?()#&*%1234567890')
+        word2 = ''.join( character for character in word if  character not in ' :.!?()#&*%1234567890')
         if word2.isalpha( ):
             return str(word)
         else:
@@ -91,10 +91,11 @@ def check_inven_or_log(dict_inventory, dict_log):
             
 def add_to_inventory():
     name = input_word('What is the name of the item?\n->')
-    price = input('What is the price of the item?\n')
+    price = input_float('What is the price of the item?\n')
     quantity = input_int('How many of this item do you have?\n->')
-    value = input('What is the replacement value of this item?\n->')
-    disk.append_inventory(name, price, quantity, value)
+    value = input_float('What is the replacement value of this item?\n->')
+    new_line = '\n' + str(name) + ', ' + str(price) + ', ' + str(quantity) + ', ' + str(value)
+    disk.append_inventory(new_line)
 
 def change_inventory(dict_inventory):
     number = input_int('Which item do you want to update?\n->')
@@ -106,8 +107,36 @@ def change_inventory(dict_inventory):
     else:
         new_trait = input_float('What would you like to change it to?\n->')
     dict_inventory = core.change_inventory(dict_inventory, number, trait, new_trait)
-    disk.update_inventory(dict_inventory)
+    update_inventory(dict_inventory)
     status = input_choice(3, '1. Change something else, 2. Go back to Main Menu\n->')
+
+def update_inventory(dict_inventory):
+    str_inventory = core.dict_inven_to_str(dict_inventory)
+    disk.rewrite_inventory(str_inventory)
+
+def append_log(dict_log, i_d, name, rent_charge, days, time_out, time_in, total):
+    new_line = '\n'+ str(i_d) + ', ' + str(name) + ', ' + str(rent_charge) + ', ' +str(days)  + ', ' + str(time_out) +', ' + str(time_in) + ', ' + str(total)
+    disk.append_log(new_line)
+
+def rewrite_log(dict_log, i_d, rent_charge, days, time_in, total):
+    new_log = core.log_line(dict_log, i_d, rent_charge, days, time_in, total)
+    new_log = core.make_log_str(dict_log)
+    disk.rewrite_log(new_log)
+
+def clear_log():
+    disk.rewrite_log('')
+
+def check_out(dict_inventory, dict_log, i_d, name, number, time_out, deposit):
+    core.rent_out(dict_inventory, number)
+    update_inventory(dict_inventory)
+    append_log(dict_log, i_d, name, 'N/A', 'N/A', time_out, 'N/A', deposit)
+
+def check_in(dict_inventory, dict_log, number, time_in, i_d_guess, days):
+    core.rent_in(dict_inventory, number)
+    update_inventory(dict_inventory)
+    final_cost = core.final_cost(dict_inventory, number, days)
+    rent_charge = core.rent_cost(dict_inventory, number, days)
+    rewrite_log(dict_log, i_d_guess, rent_charge, days, time_in, float(final_cost - core.deposit(dict_inventory, number)))
 
 def random_barcode_lines(length, height):
     '''int-> str'''
@@ -117,8 +146,6 @@ def random_barcode_lines(length, height):
         code.append(random.choice(choices))
     return''.join(code)
     
-
-
 def rand_numbers(length):
     numbers = "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     code = []
@@ -181,8 +208,8 @@ def main():
             time_out = current_time()
             if core.check_quantity(dict_inventory, number):
                 deposit = core.deposit(dict_inventory, number)
-                disk.check_out(dict_inventory, i_d, name,number, time_out, deposit)
                 dict_log = core.update_dict_log(dict_log, i_d, name, time_out)
+                check_out(dict_inventory, dict_log, i_d, name, number, time_out, deposit)
                 receipt(i_d, dict_log, dict_inventory, number, time_out)
             else:
                 print('Sorry, were out of that item')
@@ -193,7 +220,7 @@ def main():
             days = input_int('How many days did you rent it?\n->')
             i_d_guess = input_guess(dict_log, 'What is your id number?\n->')
             time_in = current_time()
-            disk.check_in(dict_inventory, dict_log, number, time_in, i_d_guess, days)
+            check_in(dict_inventory, dict_log, number, time_in, i_d_guess, days)
             receipt(i_d_guess, dict_log, dict_inventory, number, time_in)
     #employee
     elif answer == '2':
@@ -212,7 +239,7 @@ def main():
         elif option == '3':
             clear = input_choice(3, 'Are you sure you want to clear\n 1. Yes  2.No\n->')
             if clear == '1':
-                disk.clear_log()
+                clear_log()
             else:
                 print('Ok. Is there anything else you want to do?')
                 

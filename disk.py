@@ -1,50 +1,30 @@
 #Opening and closing files goes here
 import core
-def open_log():
-    with open('history.txt', 'r') as file:
-        file.readline()
-        log = file.readlines()
-    return log
-
-
-def append_log(i_d, name, rent_charge, days,time_out, time_in, total):
-    with open('history.txt', 'a') as file:
-         file.write('\n'+ str(i_d) + ', ' + str(name) + ', ' + str(rent_charge) + ', ' +str(days)  + ', ' + str(time_out) +', ' + str(time_in) + ', ' + str(total))
-
-def rewrite_checkin(dict_log, i_d,rent_charge, days, time_in, total):
-    with open('history.txt', 'w') as file:
-        new_log = core.log_line(dict_log, i_d, rent_charge, days, time_in, total)
-        new_log = core.make_log_str(dict_log)
-        file.write(new_log)
-
 def open_inventory():
     with open('inventory.txt', 'r') as file:
         file.readline()
         inventory = file.readlines()
     return inventory
 
-def update_inventory(dict_inventory):
-    with open('inventory.txt', 'w') as file:
-        str_inventory = core.dict_inven_to_str(dict_inventory)
-        file.write(str_inventory)
-
-def append_inventory(name, price, quantity, value):
+def append_inventory(text):
     with open('inventory.txt', 'a') as file:
-        new_line = core.new_line(name, price, quantity, value)
-        file.write(new_line)
+        file.write(text)
 
-def check_out(dict_inventory, i_d,name, number, time_out, deposit):
-    core.rent_out(dict_inventory, number)
-    update_inventory(dict_inventory)
-    append_log(i_d, name, 'N/A', 'N/A', time_out, 'N/A', deposit)
-    
-def check_in(dict_inventory, dict_log, number, time_in, i_d_guess, days):
-    core.rent_in(dict_inventory, number)
-    update_inventory(dict_inventory)
-    final_cost = core.final_cost(dict_inventory, number, days)
-    rent_charge = core.rent_cost(dict_inventory, number, days)
-    rewrite_checkin(dict_log, i_d_guess, rent_charge, days, time_in, float(final_cost - core.deposit(dict_inventory, number)))
+def rewrite_inventory(text):
+    with open('inventory.txt', 'w') as file:
+        file.write(text)
 
-def clear_log():
+
+def open_log():
+    with open('history.txt', 'r') as file:
+        file.readline()
+        log = file.readlines()
+    return log
+
+def append_log(text):
+    with open('history.txt', 'a') as file:
+         file.write(text)
+
+def rewrite_log(text):
     with open('history.txt', 'w') as file:
-        file.write('')
+        file.write(text)

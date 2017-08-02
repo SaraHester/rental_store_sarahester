@@ -43,10 +43,6 @@ def log_line(dict_log, i_d, rent_charge, days, time_in, total):
     dict_log[i_d]['days'] = days
     return dict_log
 
-def new_line(name, price, quantity, value):
-    line = '\n' + str(name) + ', ' + str(price) + ', ' + str(quantity) + ', ' + str(value)
-    return line
-
 def rent_out(dict_inventory, number):
     ''''{}, int -> {}'''
     dict_inventory[number]['quantity'] -= 1

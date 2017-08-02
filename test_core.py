@@ -119,5 +119,7 @@ def test_change_inventory():
     inventory = {1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}}
     assert core.change_inventory(inventory, 1, '1', 'COD') == {1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'COD'}}
     assert core.change_inventory(inventory, 1, '2', 4) == {1: {'quantity': -9, 'number': '1', 'price': 4.0, 'value': 35.0, 'name': 'COD'}}
-    assert core.change_inventory(inventory, 1, '3', 34) == {1: {'quantity': -9, 'number': '1', 'price': 4.0, 'value': 34.0, 'name': 'COD'}}
-    assert core.change_inventory(inventory, 1, '4', 34) ==  None
+    assert core.change_inventory(inventory, 1, '3', 34) == {1: {'quantity': 34, 'number': '1', 'price': 4.0, 'value': 35.0, 'name': 'COD'}}
+    assert core.change_inventory(inventory, 1, '4', 24) == {1: {'quantity': 34, 'number': '1', 'price': 4.0, 'value': 24.0, 'name': 'COD'}}
+    assert core.change_inventory(inventory, 1, '5', 34) ==  None
+    

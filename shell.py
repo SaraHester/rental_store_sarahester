@@ -9,13 +9,17 @@ def slow_type(t):
         time.sleep(random.random()*10.0/500)
 def print_intro():
     cool_letters.print_cool_letters('Welcome To Game-Flix')
+
+
 def make_pretty_inventory(dict_inventory):
     for i in range(1,len(dict_inventory) + 1):
         print("\n" + str(dict_inventory[i]['number']) +'. '+ str(dict_inventory[i]['name']) + ':\n\tPrice per day: ' + str(dict_inventory[i]['price'])+' In stock: '+ str(dict_inventory[i]['quantity']) + ' Replacement value: '+ str(dict_inventory[i]['value']))
 
 def make_pretty_log(dict_log):
-    for i in range(1,len(dict_log) + 1):
-        print('\n' + str(dict_log[i]['number']) + ', ' +  str(dict_log[i]['id']) + 'Name: ' + str(dict_log[i]['Name'] + 'Time checked out:' + str(dict_log[i]['time checked out'])) + 'Time checked in:' + str(dict_log[i]['time checked out']) + 'Total:' + str(dict_log[i]['total']))
+    for i in dict_log:
+        msg = '\n. ID: {}\n\tName: {}, Days checked out: {}, Rent Charge: {}, Time checked out: {}, Time checked in: {}, Total:'.format(dict_log[i]['id'], dict_log[i]['name'], dict_log[i]['days'], dict_log[i]['rent charge'], dict_log[i]['time checked out'], dict_log[i]['time checked in'], dict_log[i]['total'])
+        print(msg)
+        # print('\n' + '. ID:' +  str(dict_log[i]['id']) + '\n\tName: ' + str(dict_log[i]['name']) +  ', Days checked out: ' + str(dict_log[i]['days']) + ',Rent Charge: ' + str(dict_log[i]['rent charge'])+++ ', Time checked out:' + str(dict_log[i]['time checked out']) + 'Time checked in:' + str(dict_log[i]['time checked in']) + 'Total:' + str(dict_log[i]['total']))
 
 def random_i_d(dict_log):
     while True:
@@ -29,10 +33,9 @@ def current_time():
     return '{:%Y-%m-%d %H:%M}'.format(datetime.datetime.now())
 
 
-
 def input_choice(number, string):
     while True:
-        choice = input(string)
+        choice = input(string).strip()
         for i in range(number):
             if choice == str(i):
                 return choice
@@ -43,31 +46,29 @@ def input_word(string):
     while True:
         word = input(string)
         word2 = ''.join( character for character in word if  character not in ' .!?()#&*%1234567890')
-        if word2.isalpha():
-            return word
+        if word2.isalpha( ):
+            return str(word)
         else:
             print('Invalid Name')
 
 def input_int(string):
     while True:
-        number = input(string)
+        number = input(string).strip()
         if number.isdigit():
             return int(number)
         else:
             print('Invalid Input')
 def input_float(string):
     while True:
-        number = input(string)
-        if number.count('.') == 1:
-            number.remove('.')
-            if number.isdigit:
-                return number
+        number = input(string).strip()
+        if number.count('.') <= 1 and number.replace('.', '').isnumeric():
+            return float(number)
         else:
             print('Invalid Input')
 
 def input_guess(dict_log, string):
     while True:
-        i_d_guess = input(string)
+        i_d_guess = input(string).strip()
         if core.check(dict_log,i_d_guess):
             return i_d_guess
         else:
@@ -75,7 +76,7 @@ def input_guess(dict_log, string):
 
 def input_password(password):
     while True:
-        password_guess = input('PLease enter the password\n->')
+        password_guess = input('PLease enter the password\n->').strip()
         if password_guess == password:
             return password
         else:
@@ -87,24 +88,27 @@ def check_inven_or_log(dict_inventory, dict_log):
              make_pretty_inventory(dict_inventory)
         elif option == '2':
             make_pretty_log(dict_log)
+            
 def add_to_inventory():
     name = input_word('What is the name of the item?\n->')
     price = input('What is the price of the item?\n')
     quantity = input_int('How many of this item do you have?\n->')
     value = input('What is the replacement value of this item?\n->')
     disk.append_inventory(name, price, quantity, value)
+
 def change_inventory(dict_inventory):
-    status = ''
-    while status != '2':
-        number = input_int('Which item do you want to update?\n->')
-        trait = input_choice(4, '1. Name 2.Price 3. Replacement value')
-        if trait == '1':
-            new_trait = input_word('What would you like to change it to?\n->')
-        else:
-            new_trait = input_float('What would you like to change it to?\n->')
-        dict_inventory = core.change_inventory(dict_inventory, number, trait, new_trait)
-        disk.update_inventory(dict_inventory)
-        status = input_choice(3, '1. Change something else, 2. Go back to Main Menu\n->')
+    number = input_int('Which item do you want to update?\n->')
+    trait = input_choice(5, '1. Name 2.Price 3.Quantity 4.Replacement value\n->')
+    if trait == '1':
+        new_trait = input_word('What would you like to change it to?\n->')
+    elif trait == '3':
+        new_trait = input_int('What would you like to change it to?\n->')
+    else:
+        new_trait = input_float('What would you like to change it to?\n->')
+    dict_inventory = core.change_inventory(dict_inventory, number, trait, new_trait)
+    disk.update_inventory(dict_inventory)
+    status = input_choice(3, '1. Change something else, 2. Go back to Main Menu\n->')
+
 def random_barcode_lines(length, height):
     '''int-> str'''
     choices =  "▎", "▏", "▍", "▌", "█", "▌", "▌"
@@ -197,20 +201,21 @@ def main():
         check_inven_or_log(dict_inventory, dict_log)
 
     elif answer == '3':
-            print('Main Menu')
-            option = input_choice(4, '1. Add to inventory 2. Change or update inventory 3. Clear history')
-            if option == '1':
-                add_to_inventory()
-            elif option == '2':
-                make_pretty_inventory(dict_inventory)
-                change_inventory(dict_inventory)
-            elif option == '3':
-                clear = input_choice(3, 'Are you sure you want to clear\n 1. Yes  2.No\n->')
-                if clear == '1':
-                    disk.clear_log()
-                else:
-                    print('Ok. Is there anything else you want to do?')
-                    
+        input_password('lyes')
+        print('Main Menu')
+        option = input_choice(4, '1. Add to inventory 2. Change or update inventory 3. Clear history')
+        if option == '1':
+            add_to_inventory()
+        elif option == '2':
+            make_pretty_inventory(dict_inventory)
+            change_inventory(dict_inventory)
+        elif option == '3':
+            clear = input_choice(3, 'Are you sure you want to clear\n 1. Yes  2.No\n->')
+            if clear == '1':
+                disk.clear_log()
+            else:
+                print('Ok. Is there anything else you want to do?')
+                
 
 if __name__=='__main__':
     main()

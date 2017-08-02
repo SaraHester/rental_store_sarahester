@@ -94,5 +94,8 @@ def change_inventory(dict_inventory, number, trait, new_trait):
         dict_inventory[number]['price'] = new_trait
         return dict_inventory
     elif trait == '3':
+        dict_inventory[number]['quantity'] = new_trait
+        return dict_inventory
+    elif trait == '4':
         dict_inventory[number]['value'] = new_trait
         return dict_inventory

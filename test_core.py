@@ -24,6 +24,19 @@ def test_make_log_str():
     log = {'04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': 16.295, 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265', 'days': 5, 'rent charge': 13.4}}
     assert core.make_log_str(log) == '\n04470289, Call of Duty, 5, 13.4, 2017-07-27 11:06:43.142199, 2017-07-27 11:07:29.249265, 16.295'
 
+def test_delete_from_inventory():
+    inventory = {1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}}
+    inventory2 = {
+        1: {'quantity': -9, 'number': '1', 'price': 3.0, 'value': 35.0, 'name': 'Call of Duty'}, 
+        2: {'quantity': -13, 'number': '2', 'price': 5.0, 'value': 45.0, 'name': 'Deadman Wonderland(season 1)'},
+        3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
+        }
+    new_inventory = {
+        2: {'quantity': -13, 'number': '2', 'price': 5.0, 'value': 45.0, 'name': 'Deadman Wonderland(season 1)'},
+        3: {'quantity': 8, 'number': '3', 'price': 2.05, 'value': 24.0, 'name': 'Need for Speed:Most Wanted'}
+        }
+    assert core.delete_from_inventory(inventory, '1') == {}
+    assert core.delete_from_inventory(inventory2, '1') == new_inventory
 def test_update_dict_log():
     log = {}
     assert core.update_dict_log(log, '04470289','Call of Duty', '2017-07-27 11:07:29.249265') == {'04470289': {'time checked out': '2017-07-27 11:07:29.249265', 'total': 'N/A', 'name': 'Call of Duty', 'id': '04470289', 'time checked in': 'N/A', 'days': 'N/A', 'rent charge': 'N/A'}}

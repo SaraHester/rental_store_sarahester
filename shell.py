@@ -97,6 +97,13 @@ def add_to_inventory():
     new_line = '\n' + str(name) + ', ' + str(price) + ', ' + str(quantity) + ', ' + str(value)
     disk.append_inventory(new_line)
 
+def delete_from_inventory():
+    make_pretty_inventory(dict_inventory)
+    number = input_int('Which item would you like to delete?\n->')
+    new_inventory = core.delete_from_inventory(dict_log, number)
+    new_inventory = core.dict_inven_to_str(new_inventory)
+    disk.rewrite_inventory(new_inventory)
+    
 def change_inventory(dict_inventory):
     number = input_int('Which item do you want to update?\n->')
     trait = input_choice(5, '1. Name 2.Price 3.Quantity 4.Replacement value\n->')
@@ -230,13 +237,15 @@ def main():
     elif answer == '3':
         input_password('lyes')
         print('Main Menu')
-        option = input_choice(4, '1. Add to inventory 2. Change or update inventory 3. Clear history')
+        option = input_choice(5, '1. Add to inventory 2. Delete from inventory 3. Change or update inventory 4. Clear history')
         if option == '1':
             add_to_inventory()
         elif option == '2':
+            delete_from_inventory()
+        elif option == '3':
             make_pretty_inventory(dict_inventory)
             change_inventory(dict_inventory)
-        elif option == '3':
+        elif option == '4':
             clear = input_choice(3, 'Are you sure you want to clear\n 1. Yes  2.No\n->')
             if clear == '1':
                 clear_log()

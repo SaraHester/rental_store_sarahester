@@ -27,7 +27,7 @@ def make_pretty_inventory(dict_inventory):
 
 def make_pretty_log(dict_log):
     for i in dict_log:
-        msg = '\n. ID: {}\n\tName: {}, Days checked out: {}, Rent Charge: {}, Time checked out: {}, Time checked in: {}, Total:'.format(dict_log[i]['id'], dict_log[i]['name'], dict_log[i]['days'], dict_log[i]['rent charge'], dict_log[i]['time checked out'], dict_log[i]['time checked in'], dict_log[i]['total'])
+        msg = '\n. ID: {}Name: {}, Days checked out: {}, Rent Charge: {}, \n\tTime checked out: {}, Time checked in: {}, Total:'.format(dict_log[i]['id'], dict_log[i]['name'], dict_log[i]['days'], dict_log[i]['rent charge'], dict_log[i]['time checked out'], dict_log[i]['time checked in'], dict_log[i]['total'])
         print(msg)
         # print('\n' + '. ID:' +  str(dict_log[i]['id']) + '\n\tName: ' + str(dict_log[i]['name']) +  ', Days checked out: ' + str(dict_log[i]['days']) + ',Rent Charge: ' + str(dict_log[i]['rent charge'])+++ ', Time checked out:' + str(dict_log[i]['time checked out']) + 'Time checked in:' + str(dict_log[i]['time checked in']) + 'Total:' + str(dict_log[i]['total']))
 
@@ -74,16 +74,8 @@ def input_guess(dict_log, string):
         else:
             print('Sorry, That\'s not a valid id')
 
-def input_password(password):
-    while True:
-        password_guess = input('PLease enter the password\n->').strip()
-        if password_guess == password:
-            return password
-        else:
-            print('\nINCORRECT PASSWORD\n')
-
 def check_inven_or_log(dict_inventory, dict_log):
-        option = input('What do you want to do? 1.Manage stock. 2. Check history\n->')
+        option = input('What do you want to do? \n1.Manage stock. \n2. Check history\n->')
         if option == '1':
              make_pretty_inventory(dict_inventory)
         elif option == '2':
@@ -91,22 +83,22 @@ def check_inven_or_log(dict_inventory, dict_log):
             
 def add_to_inventory():
     name = input_word('What is the name of the item?\n->')
-    price = input_float('What is the price of the item?\n')
+    price = input_float('What is the price of the item?\n->')
     quantity = input_int('How many of this item do you have?\n->')
     value = input_float('What is the replacement value of this item?\n->')
     new_line = '\n' + str(name) + ', ' + str(price) + ', ' + str(quantity) + ', ' + str(value)
     disk.append_inventory(new_line)
 
-def delete_from_inventory():
+def delete_from_inventory(dict_inventory):
     make_pretty_inventory(dict_inventory)
     number = input_int('Which item would you like to delete?\n->')
-    new_inventory = core.delete_from_inventory(dict_log, number)
+    new_inventory = core.delete_from_inventory(dict_inventory, number)
     new_inventory = core.dict_inven_to_str(new_inventory)
     disk.rewrite_inventory(new_inventory)
     
 def change_inventory(dict_inventory):
     number = input_int('Which item do you want to update?\n->')
-    trait = input_choice(5, '1. Name 2.Price 3.Quantity 4.Replacement value\n->')
+    trait = input_choice(5, '\n1. Name \n2.Price \n3.Quantity \n4.Replacement value\n->')
     if trait == '1':
         new_trait = input_word('What would you like to change it to?\n->')
     elif trait == '3':
@@ -147,7 +139,7 @@ def check_in(dict_inventory, dict_log, number, time_in, i_d_guess, days):
 
 def random_barcode_lines(length, height):
     '''int-> str'''
-    choices =  "▎", "▏", "▍", "▌", "█", "▌", "▌"
+    choices =  "▎", "▍", "▌", "█", "▌", "▌"
     code = []
     for i in range(length):
         code.append(random.choice(choices))
@@ -170,19 +162,20 @@ def receipt(i_d, dict_log, dict_inventory, number, date):
     print("\t╔══════════════════════════════════════════════╗")
     print("\t║                   GAME-FLIX                  ║")
     print("\t║----------------------------------------------║")
-    print("\t║Item:", str(dict_inventory[number]['name']).ljust(41 - len(str(dict_inventory[number]['name']))), "║")
+    print("\t║Item:", str(dict_inventory[number]['name']).ljust(51 - len(str(dict_inventory[number]['name']))), "║")
     print("\t║Price per day:", str(dict_inventory[number]['price']).ljust(33 - len(str(dict_inventory[number]['price']))), "║")
-    print("\t║Days checked out:", str(dict_log[i_d]['days']).ljust(28 - len(str(dict_log[i_d]['days']))), "║")
+    print("\t║Days checked out:", str(dict_log[i_d]['days']).ljust(30 - len(str(dict_log[i_d]['days']))), "║")
     print("\t║Rent Charge:", str(dict_log[i_d]['rent charge']), "".ljust(31 - len(str(dict_log[i_d]['rent charge']))), "║")
     print("\t║Sales Tax: 0.07                               ║")
     print("\t║Total sales:", str(dict_log[i_d]['total']) , ''.ljust(31 - len(str(dict_log[i_d]['total']))), "║" )
+    print("\t║ID number:", str(i_d), ''.ljust(47 - len(str(id))), "║")
     print("\t║Time checked out:", str(dict_log[i_d]['time checked out']), "".ljust(26 - len(str(dict_log[i_d]['time checked out']))), "║")
     print("\t║Time checked in:", str(dict_log[i_d]['time checked in']), "".ljust(27 - len(str(dict_log[i_d]['time checked in']))), "║")
     print("\t║Transaction time:", date, "".ljust(10), "║" )
     print("\t║----------------------------------------------║" )
-    print("\t║            ",code, "            ║")
-    print("\t║            ",code, "            ║")
-    print("\t║            ",rand_numbers(20),"            ║")
+    print("\t║          ",code, "            ║")
+    print("\t║          ",code, "            ║")
+    print("\t║          ",rand_numbers(20),"              ║")
     print("\t║                                              ║")
     print("\t║                                              ║")
     print("\t║==============================================║")
@@ -201,11 +194,13 @@ def main():
     log = disk.open_log()
     dict_log = core.make_log_dict(log)
     print_intro()
+    # print(dict_inventory)
+
     #Start Branch
-    answer = input_choice(4, 'Are you 1. customer 2. Employee 3. Administrator?\n->')
+    answer = input_choice(4, 'Are you \n1. customer \n2. Employee \n3. Administrator?\n->')
     #customer
     if answer == '1':
-        in_out = input_choice(3, 'Are you 1. checking out 2. returning?\n->')
+        in_out = input_choice(3, 'Are you \n1. checking out \n2. returning?\n->')
         make_pretty_inventory(dict_inventory)
         #check oout
         if in_out == '1':
@@ -231,17 +226,15 @@ def main():
             receipt(i_d_guess, dict_log, dict_inventory, number, time_in)
     #employee
     elif answer == '2':
-        input_password('no')
         check_inven_or_log(dict_inventory, dict_log)
 
     elif answer == '3':
-        input_password('lyes')
         print('Main Menu')
-        option = input_choice(5, '1. Add to inventory 2. Delete from inventory 3. Change or update inventory 4. Clear history')
+        option = input_choice(5, '1. Add to inventory \n2. Delete from inventory \n3. Change or update inventory \n4. Clear history\n->')
         if option == '1':
             add_to_inventory()
         elif option == '2':
-            delete_from_inventory()
+            delete_from_inventory(dict_inventory)
         elif option == '3':
             make_pretty_inventory(dict_inventory)
             change_inventory(dict_inventory)

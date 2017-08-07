@@ -32,10 +32,12 @@ def make_log_str(dict_log):
     return str_log
 
 def update_dict_log(dict_log, i_d, name, time_out):
+    '''({dict}, str, str, str) -> {dict}'''
     dict_log[i_d] = {'id': i_d, 'name': name,'days': 'N/A', 'rent charge': 'N/A','time checked out': time_out , 'time checked in': 'N/A', 'total': 'N/A'}
     return dict_log
 
 def delete_from_inventory(dict_log, number):
+    '''{dict}, int -> {dict}'''
     del dict_log[int(number)]
     return dict_log
 
@@ -82,11 +84,13 @@ def check(dict_log, i_d_guess):
         return False
 
 def check_quantity(dict_inventory, number):
+    '''{dict}, int -> bool'''
     if dict_inventory[number]['quantity'] > 0:
             return True
     else:
         return False
 def change_inventory(dict_inventory, number, trait, new_trait):
+    '''{dict}, int, str, str -> {dict}'''
     if trait == '1':
         dict_inventory[number]['name'] = new_trait
         return dict_inventory

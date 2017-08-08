@@ -42,7 +42,7 @@ def make_pretty_log(dict_log):
 def input_choice(number, string):
     while True:
         choice = input(string).strip()
-        for i in range(number):
+        for i in range(1, number):
             if choice == str(i):
                 return choice
         else:
@@ -63,7 +63,7 @@ def input_word(string):
 def input_int(string):
     while True:
         number = input(string).strip()
-        if number.isdigit():
+        if number.isdigit() and int(number) > 0:
             return int(number)
         else:
             print('Invalid Input')
@@ -72,19 +72,24 @@ def input_int(string):
 def input_float(string):
     while True:
         number = input(string).strip()
-        if number.count('.') <= 1 and number.replace('.', '').isnumeric():
+        if number.count('.') <= 1 and number.replace(
+                '.', '').isnumeric() and float(number) > 0:
             return float(number)
         else:
             print('Invalid Input')
 
 
-def input_guess(dict_log, string):
+def input_guess(dict_log, dict_inventory, number, string):
     while True:
         i_d_guess = input(string).strip()
-        if core.check(dict_log, i_d_guess):
+        if core.check(
+                dict_log, i_d_guess
+        ) and dict_inventory[number]['name'] == dict_log[i_d_guess]['name']:
             return i_d_guess
         else:
-            print('Sorry, That\'s not a valid id')
+            print(
+                '\nSorry, Either it\'s not a valid id or the id does not match any checked out movies with that name.\n'
+            )
 
 
 def check_inven_or_log(dict_inventory, dict_log):
@@ -113,18 +118,20 @@ def add_to_inventory():
 
 def delete_from_inventory(dict_inventory):
     make_pretty_inventory(dict_inventory)
-    number = input_choice(
-        len(dict_inventory.keys()) + 1,
-        'Which item would you like to delete?\n->')
+    number = int(
+        input_choice(
+            len(dict_inventory.keys()) + 1,
+            'Which item would you like to delete?\n->'))
     new_inventory = core.delete_from_inventory(dict_inventory, number)
     disk.rewrite_inventory(new_inventory)
     print('==Deleted from Inventory==')
 
 
 def change_inventory(dict_inventory):
-    number = input_choice(
-        len(dict_inventory.keys()) + 1,
-        'Which item do you want to update?\n->')
+    number = int(
+        input_choice(
+            len(dict_inventory.keys()) + 1,
+            'Which item do you want to update?\n->'))
     trait = input_choice(
         5, '\n1. Name \n2.Price \n3.Quantity \n4.Replacement value\n->')
     if trait == '1':
@@ -194,10 +201,13 @@ def returning(dict_inventory, dict_log, number, time_in, i_d_guess, days):
 
 
 def check_in(dict_inventory, dict_log):
-    number = input_choice(
-        len(dict_inventory.keys()) + 1, 'Which one are you returning?\n->')
+    number = int(
+        input_choice(
+            len(dict_inventory.keys()) + 1,
+            'Which one are you returning?\n->'))
     days = input_int('How many days did you rent it?\n->')
-    i_d_guess = input_guess(dict_log, 'What is your id number?\n->')
+    i_d_guess = input_guess(dict_log, dict_inventory, number,
+                            'What is your id number?\n->')
     time_in = current_time()
     returning(dict_inventory, dict_log, number, time_in, i_d_guess, days)
     receipt(i_d_guess, dict_log, dict_inventory, number, time_in)

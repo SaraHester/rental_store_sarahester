@@ -102,6 +102,13 @@ def test_final_cost():
         }
     assert core.final_cost(inventory, 2, 5) == 26.75
 
+def test_total_revenue():
+    log = {
+        '44030379': {'time checked out': '2017-07-27 11:06:43.142199', 'total': 40, 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:06:12.90295', 'days': 6, 'rent charge': 5.4}, 
+        '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': 16.295, 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265', 'days': 5, 'rent charge': 13.4}
+        }
+    assert core.total_revenue(log) == 56.295
+
 def test_check():
     dict_log ={
         '04470289': {'time checked out': '2017-07-27 11:06:43.142199', 'total': '16.295', 'name': 'Call of Duty', 'id': '04470289', 'time checked in': '2017-07-27 11:07:29.249265'}, 

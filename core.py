@@ -6,40 +6,78 @@ def make_inven_dict(inventory):
     for line in inventory:
         number += 1
         item, price, quantity, value = line.strip().split(', ')
-        dict_inventory[int(number)] = {'name': item, 'number': number, 'price': float(price), 'quantity': int(quantity), 'value': float(value)}
+        dict_inventory[int(number)] = {
+            'name': item,
+            'number': number,
+            'price': float(price),
+            'quantity': int(quantity),
+            'value': float(value)
+        }
     return dict_inventory
+
 
 def dict_inven_to_str(dict_inventory):
     '''dict{} -> str'''
     str_inventory = ''
     for item in dict_inventory:
-        str_inventory += '\n' + str(dict_inventory[item]['name']) + ', ' +  str(dict_inventory[item]['price']) + ', ' +  str(dict_inventory[item]['quantity']) + ', ' +  str(dict_inventory[item]['value'])
+        str_inventory += '\n' + str(dict_inventory[item]['name']) + ', ' + str(
+            dict_inventory[item]['price']) + ', ' + str(
+                dict_inventory[item]['quantity']) + ', ' + str(
+                    dict_inventory[item]['value'])
     return str_inventory
+
 
 def make_log_dict(log):
     '''[] -> {}'''
     dict_log = {}
     for line in log:
-        i_d, name, days, rent_charge,time_out, time_in, total = line.strip().split(', ')
-        dict_log[str(i_d)] = {'id': i_d, 'name': name,'days': days, 'rent charge': rent_charge,'time checked out': time_out , 'time checked in': time_in, 'total': total}
+        i_d, name, days, rent_charge, time_out, time_in, total = line.strip(
+        ).split(', ')
+        dict_log[str(i_d)] = {
+            'id': i_d,
+            'name': name,
+            'days': days,
+            'rent charge': rent_charge,
+            'time checked out': time_out,
+            'time checked in': time_in,
+            'total': total
+        }
     return dict_log
+
 
 def make_log_str(dict_log):
     '''dict{} -> str'''
     str_log = ''
     for line in sorted(dict_log):
-        str_log += '\n' + str(dict_log[line]['id']) + ', ' +  str(dict_log[line]['name']) + ', ' +  str(dict_log[line]['days']) + ', '+ str(dict_log[line]['rent charge']) + ', ' + str(dict_log[line]['time checked out']) + ', ' + str(dict_log[line]['time checked in']) + ', ' + str(dict_log[line]['total'])
+        str_log += '\n' + str(dict_log[line]['id']) + ', ' + str(
+            dict_log[line]['name']) + ', ' + str(
+                dict_log[line]['days']) + ', ' + str(
+                    dict_log[line]['rent charge']) + ', ' + str(
+                        dict_log[line]['time checked out']) + ', ' + str(
+                            dict_log[line]['time checked in']) + ', ' + str(
+                                dict_log[line]['total'])
     return str_log
+
 
 def update_dict_log(dict_log, i_d, name, time_out):
     '''({dict}, str, str, str) -> {dict}'''
-    dict_log[i_d] = {'id': i_d, 'name': name,'days': 'N/A', 'rent charge': 'N/A','time checked out': time_out , 'time checked in': 'N/A', 'total': 'N/A'}
+    dict_log[i_d] = {
+        'id': i_d,
+        'name': name,
+        'days': 'N/A',
+        'rent charge': 'N/A',
+        'time checked out': time_out,
+        'time checked in': 'N/A',
+        'total': 'N/A'
+    }
     return dict_log
+
 
 def delete_from_inventory(dict_log, number):
     '''{dict}, int -> {dict}'''
     del dict_log[int(number)]
     return dict_log
+
 
 def log_line(dict_log, i_d, rent_charge, days, time_in, total):
     '''{}, str, str, float -> {}'''
@@ -49,31 +87,47 @@ def log_line(dict_log, i_d, rent_charge, days, time_in, total):
     dict_log[i_d]['days'] = days
     return dict_log
 
+
 def rent_out(dict_inventory, number):
     ''''{}, int -> {}'''
     dict_inventory[number]['quantity'] -= 1
     return dict_inventory
+
 
 def rent_in(dict_inventory, number):
     '''{}, int ->'''
     dict_inventory[number]['quantity'] += 1
     return dict_inventory
 
+
 def rent_cost(dict_inventory, number, days):
     '''{}, int, int -> {}'''
     return dict_inventory[number]['price'] * int(days)
+
 
 def deposit(dict_inventory, number):
     '''{}, int -> {}'''
     return dict_inventory[number]['value'] * .10
 
+
 def sales_tax(cost):
     '''int-> int'''
     return cost * .07
 
+
 def final_cost(dict_inventory, number, days):
     '''{}, int, int -> int'''
-    return rent_cost(dict_inventory, number, days) +  sales_tax(rent_cost(dict_inventory, number, days))
+    return rent_cost(
+        dict_inventory, number,
+        days) + sales_tax(rent_cost(dict_inventory, number, days))
+
+
+def total_revenue(dict_log):
+    revenue = 0
+    for item in dict_log:
+        revenue += float(dict_log[item]['total'])
+    return revenue
+
 
 def check(dict_log, i_d_guess):
     '''{}, str -> str'''
@@ -83,12 +137,15 @@ def check(dict_log, i_d_guess):
     else:
         return False
 
+
 def check_quantity(dict_inventory, number):
     '''{dict}, int -> bool'''
     if dict_inventory[number]['quantity'] > 0:
-            return True
+        return True
     else:
         return False
+
+
 def change_inventory(dict_inventory, number, trait, new_trait):
     '''{dict}, int, str, str -> {dict}'''
     if trait == '1':

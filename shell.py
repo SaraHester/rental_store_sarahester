@@ -1,18 +1,10 @@
-#Print and input go here
 ##Import core and disk
 import core, disk, sys, random, time, datetime, cool_letters
 
 
-##make helper functions
-def slow_type(t):
-    for l in t:
-        sys.stdout.write(l)
-        sys.stdout.flush()
-        time.sleep(random.random() * 10.0 / 500)
-
-
+##helper functions
 def print_intro():
-    cool_letters.print_cool_letters('Welcome To Game-Flix')
+    cool_letters.print_cool_letters('  Welcome To Game-Flix')
 
 
 def random_i_d(dict_log):
@@ -40,12 +32,11 @@ def make_pretty_inventory(dict_inventory):
 
 def make_pretty_log(dict_log):
     for i in dict_log:
-        msg = '\n. ID: {}Name: {}, Days checked out: {}, Rent Charge: {}, \n\tTime checked out: {}, Time checked in: {}, Total:'.format(
+        msg = '\n ID: {}, Name: {}, Days checked out: {}, Rent Charge: {}, \n\tTime checked out: {}, Time checked in: {}, Total: {}'.format(
             dict_log[i]['id'], dict_log[i]['name'], dict_log[i]['days'],
             dict_log[i]['rent charge'], dict_log[i]['time checked out'],
             dict_log[i]['time checked in'], dict_log[i]['total'])
         print(msg)
-        # print('\n' + '. ID:' +  str(dict_log[i]['id']) + '\n\tName: ' + str(dict_log[i]['name']) +  ', Days checked out: ' + str(dict_log[i]['days']) + ',Rent Charge: ' + str(dict_log[i]['rent charge'])+++ ', Time checked out:' + str(dict_log[i]['time checked out']) + 'Time checked in:' + str(dict_log[i]['time checked in']) + 'Total:' + str(dict_log[i]['total']))
 
 
 def input_choice(number, string):
@@ -117,18 +108,23 @@ def add_to_inventory():
     new_line = '\n' + str(name) + ', ' + str(price) + ', ' + str(
         quantity) + ', ' + str(value)
     disk.append_inventory(new_line)
+    print('==Added to Inventory==')
 
 
 def delete_from_inventory(dict_inventory):
     make_pretty_inventory(dict_inventory)
-    number = input_int('Which item would you like to delete?\n->')
+    number = input_choice(
+        len(dict_inventory.keys()) + 1,
+        'Which item would you like to delete?\n->')
     new_inventory = core.delete_from_inventory(dict_inventory, number)
-    new_inventory = core.dict_inven_to_str(new_inventory)
     disk.rewrite_inventory(new_inventory)
+    print('==Deleted from Inventory==')
 
 
 def change_inventory(dict_inventory):
-    number = input_int('Which item do you want to update?\n->')
+    number = input_choice(
+        len(dict_inventory.keys()) + 1,
+        'Which item do you want to update?\n->')
     trait = input_choice(
         5, '\n1. Name \n2.Price \n3.Quantity \n4.Replacement value\n->')
     if trait == '1':
@@ -140,26 +136,23 @@ def change_inventory(dict_inventory):
     dict_inventory = core.change_inventory(dict_inventory, number, trait,
                                            new_trait)
     update_inventory(dict_inventory)
-    status = input_choice(
-        3, '1. Change something else, 2. Go back to Main Menu\n->')
+    print('==Inventory Changed==')
 
 
 def update_inventory(dict_inventory):
-    str_inventory = core.dict_inven_to_str(dict_inventory)
-    disk.rewrite_inventory(str_inventory)
+    disk.rewrite_inventory(dict_inventory)
 
 
 def append_log(dict_log, i_d, name, rent_charge, days, time_out, time_in,
                total):
     new_line = '\n' + str(i_d) + ', ' + str(name) + ', ' + str(
         rent_charge) + ', ' + str(days) + ', ' + str(time_out) + ', ' + str(
-            time_in) + ', ' + str(total)
+            time_in) + ', {0:.2f}'.format(total)
     disk.append_log(new_line)
 
 
 def rewrite_log(dict_log, i_d, rent_charge, days, time_in, total):
     new_log = core.log_line(dict_log, i_d, rent_charge, days, time_in, total)
-    new_log = core.make_log_str(dict_log)
     disk.rewrite_log(new_log)
 
 
@@ -167,19 +160,70 @@ def clear_log():
     disk.rewrite_log('')
 
 
-def check_out(dict_inventory, dict_log, i_d, name, number, time_out, deposit):
+def rent_out(dict_inventory, dict_log, i_d, name, number, time_out, deposit):
     core.rent_out(dict_inventory, number)
     update_inventory(dict_inventory)
     append_log(dict_log, i_d, name, 'N/A', 'N/A', time_out, 'N/A', deposit)
 
 
-def check_in(dict_inventory, dict_log, number, time_in, i_d_guess, days):
+def check_out(dict_inventory, dict_log):
+    number = int(
+        input_choice(
+            len(dict_inventory.keys()) + 1,
+            "Which one would you like to check out\n->"))
+    i_d = random_i_d(dict_log)
+    name = dict_inventory[number]['name']
+    time_out = current_time()
+    if core.check_quantity(dict_inventory, number):
+        deposit = core.deposit(dict_inventory, number)
+        dict_log = core.update_dict_log(dict_log, i_d, name, time_out)
+        rent_out(dict_inventory, dict_log, i_d, name, number, time_out,
+                 deposit)
+        receipt(i_d, dict_log, dict_inventory, number, time_out)
+    else:
+        print('Sorry, were out of that item')
+
+
+def returning(dict_inventory, dict_log, number, time_in, i_d_guess, days):
     core.rent_in(dict_inventory, number)
     update_inventory(dict_inventory)
     final_cost = core.final_cost(dict_inventory, number, days)
     rent_charge = core.rent_cost(dict_inventory, number, days)
     rewrite_log(dict_log, i_d_guess, rent_charge, days, time_in,
                 float(final_cost - core.deposit(dict_inventory, number)))
+
+
+def check_in(dict_inventory, dict_log):
+    number = input_choice(
+        len(dict_inventory.keys()) + 1, 'Which one are you returning?\n->')
+    days = input_int('How many days did you rent it?\n->')
+    i_d_guess = input_guess(dict_log, 'What is your id number?\n->')
+    time_in = current_time()
+    returning(dict_inventory, dict_log, number, time_in, i_d_guess, days)
+    receipt(i_d_guess, dict_log, dict_inventory, number, time_in)
+
+
+def admin(dict_inventory):
+    print('Main Menu')
+    option = input_choice(
+        5,
+        '1. Add to inventory \n2. Delete from inventory \n3. Change or update inventory \n4. Clear history\n->'
+    )
+    if option == '1':
+        add_to_inventory()
+    elif option == '2':
+        delete_from_inventory(dict_inventory)
+    elif option == '3':
+        make_pretty_inventory(dict_inventory)
+        change_inventory(dict_inventory)
+    elif option == '4':
+        clear = input_choice(
+            3, 'Are you sure you want to clear\n 1. Yes  2.No\n->')
+        if clear == '1':
+            clear_log()
+            print("==History Cleared==")
+        else:
+            print("Request Denied. Exiting...")
 
 
 def random_barcode_lines(length, height):
@@ -249,71 +293,28 @@ def receipt(i_d, dict_log, dict_inventory, number, date):
     print("\n")
 
 
-##make main
+###MAIN##
 def main():
-    inventory = disk.open_inventory()
-    dict_inventory = core.make_inven_dict(inventory)
-    log = disk.open_log()
-    dict_log = core.make_log_dict(log)
+    dict_inventory = disk.open_inventory()
+    dict_log = disk.open_log()
     print_intro()
-    # print(dict_inventory)
-
-    #Start Branch
     answer = input_choice(
         4, 'Are you \n1. customer \n2. Employee \n3. Administrator?\n->')
-    #customer
+
     if answer == '1':
         in_out = input_choice(3,
                               'Are you \n1. checking out \n2. returning?\n->')
         make_pretty_inventory(dict_inventory)
-        #check oout
         if in_out == '1':
-            number = input_int("Which one would you like to check out\n->")
-            i_d = random_i_d(dict_log)
-            name = dict_inventory[number]['name']
-            time_out = current_time()
-            if core.check_quantity(dict_inventory, number):
-                deposit = core.deposit(dict_inventory, number)
-                dict_log = core.update_dict_log(dict_log, i_d, name, time_out)
-                check_out(dict_inventory, dict_log, i_d, name, number,
-                          time_out, deposit)
-                receipt(i_d, dict_log, dict_inventory, number, time_out)
-            else:
-                print('Sorry, were out of that item')
-        # check in
+            check_out(dict_inventory, dict_log)
         elif in_out == '2':
-            #make helper function
-            number = input_int('Which one are you returning?\n->')
-            days = input_int('How many days did you rent it?\n->')
-            i_d_guess = input_guess(dict_log, 'What is your id number?\n->')
-            time_in = current_time()
-            check_in(dict_inventory, dict_log, number, time_in, i_d_guess,
-                     days)
-            receipt(i_d_guess, dict_log, dict_inventory, number, time_in)
-    #employee
+            check_in(dict_inventory, dict_log)
+
     elif answer == '2':
         check_inven_or_log(dict_inventory, dict_log)
 
     elif answer == '3':
-        print('Main Menu')
-        option = input_choice(
-            5,
-            '1. Add to inventory \n2. Delete from inventory \n3. Change or update inventory \n4. Clear history\n->'
-        )
-        if option == '1':
-            add_to_inventory()
-        elif option == '2':
-            delete_from_inventory(dict_inventory)
-        elif option == '3':
-            make_pretty_inventory(dict_inventory)
-            change_inventory(dict_inventory)
-        elif option == '4':
-            clear = input_choice(
-                3, 'Are you sure you want to clear\n 1. Yes  2.No\n->')
-            if clear == '1':
-                clear_log()
-            else:
-                print('Ok. Is there anything else you want to do?')
+        admin(dict_inventory)
 
 
 if __name__ == '__main__':

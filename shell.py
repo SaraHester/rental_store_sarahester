@@ -46,7 +46,11 @@ def input_choice(number, string):
             if choice == str(i):
                 return choice
         else:
-            print('Invalid Input')
+            print(
+                '----------------',
+                '\n!Invalid Input!\n',
+                '----------------',
+                sep='')
 
 
 def input_word(string):
@@ -57,7 +61,11 @@ def input_word(string):
         if word2.isalpha():
             return str(word)
         else:
-            print('Invalid Name')
+            print(
+                '----------------',
+                '\n!Invalid Input!\n',
+                '----------------',
+                sep='')
 
 
 def input_int(string):
@@ -66,7 +74,11 @@ def input_int(string):
         if number.isdigit() and int(number) > 0:
             return int(number)
         else:
-            print('Invalid Input')
+            print(
+                '----------------',
+                '\n!Invalid Input!\n',
+                '----------------',
+                sep='')
 
 
 def input_float(string):
@@ -76,7 +88,11 @@ def input_float(string):
                 '.', '').isnumeric() and float(number) > 0:
             return float(number)
         else:
-            print('Invalid Input')
+            print(
+                '----------------',
+                '\n!Invalid Input!\n',
+                '----------------',
+                sep='')
 
 
 def input_guess(dict_log, dict_inventory, number, string):
@@ -88,7 +104,9 @@ def input_guess(dict_log, dict_inventory, number, string):
             return i_d_guess
         else:
             print(
-                '\nSorry, Either it\'s not a valid id or the id does not match any checked out movies with that name.\n'
+                '---------------------------------------------------------------------------------------------------\n',
+                '\nSorry, Either it\'s not a valid id or the id does not match any checked out movies with that name.\n',
+                '----------------------------------------------------------------------------------------------------\n'
             )
 
 
@@ -106,14 +124,14 @@ def check_inven_or_log(dict_inventory, dict_log):
 
 
 def add_to_inventory():
-    name = input_word('What is the name of the item?\n->')
-    price = input_float('What is the price of the item?\n->')
-    quantity = input_int('How many of this item do you have?\n->')
-    value = input_float('What is the replacement value of this item?\n->')
+    name = input_word('\nWhat is the name of the item?\n->')
+    price = input_float('\nWhat is the price of the item?\n->')
+    quantity = input_int('\nHow many of this item do you have?\n->')
+    value = input_float('\nWhat is the replacement value of this item?\n->')
     new_line = '\n' + str(name) + ', ' + str(price) + ', ' + str(
         quantity) + ', ' + str(value)
     disk.append_inventory(new_line)
-    print('==Added to Inventory==')
+    print('\n==Added to Inventory==\n')
 
 
 def delete_from_inventory(dict_inventory):
@@ -121,29 +139,29 @@ def delete_from_inventory(dict_inventory):
     number = int(
         input_choice(
             len(dict_inventory.keys()) + 1,
-            'Which item would you like to delete?\n->'))
+            '\nWhich item would you like to delete?\n->'))
     new_inventory = core.delete_from_inventory(dict_inventory, number)
     disk.rewrite_inventory(new_inventory)
-    print('==Deleted from Inventory==')
+    print('\n==Deleted from Inventory==\n')
 
 
 def change_inventory(dict_inventory):
     number = int(
         input_choice(
             len(dict_inventory.keys()) + 1,
-            'Which item do you want to update?\n->'))
+            '\nWhich item do you want to update?\n->'))
     trait = input_choice(
-        5, '\n1. Name \n2.Price \n3.Quantity \n4.Replacement value\n->')
+        5, '\n\n1. Name \n2.Price \n3.Quantity \n4.Replacement value\n->')
     if trait == '1':
-        new_trait = input_word('What would you like to change it to?\n->')
+        new_trait = input_word('\nWhat would you like to change it to?\n->')
     elif trait == '3':
-        new_trait = input_int('What would you like to change it to?\n->')
+        new_trait = input_int('\nWhat would you like to change it to?\n->')
     else:
-        new_trait = input_float('What would you like to change it to?\n->')
+        new_trait = input_float('\nWhat would you like to change it to?\n->')
     dict_inventory = core.change_inventory(dict_inventory, number, trait,
                                            new_trait)
     update_inventory(dict_inventory)
-    print('==Inventory Changed==')
+    print('\n==Inventory Changed==\n')
 
 
 def update_inventory(dict_inventory):
@@ -177,7 +195,7 @@ def check_out(dict_inventory, dict_log):
     number = int(
         input_choice(
             len(dict_inventory.keys()) + 1,
-            "Which one would you like to check out\n->"))
+            "\nWhich one would you like to check out\n->"))
     i_d = random_i_d(dict_log)
     name = dict_inventory[number]['name']
     time_out = current_time()
@@ -188,7 +206,7 @@ def check_out(dict_inventory, dict_log):
                  deposit)
         receipt(i_d, dict_log, dict_inventory, number, time_out)
     else:
-        print('Sorry, were out of that item')
+        print('\nSorry, were out of that item\n')
 
 
 def returning(dict_inventory, dict_log, number, time_in, i_d_guess, days):
@@ -204,10 +222,10 @@ def check_in(dict_inventory, dict_log):
     number = int(
         input_choice(
             len(dict_inventory.keys()) + 1,
-            'Which one are you returning?\n->'))
-    days = input_int('How many days did you rent it?\n->')
+            '\nWhich one are you returning?\n->'))
+    days = input_int('\nHow many days did you rent it?\n->')
     i_d_guess = input_guess(dict_log, dict_inventory, number,
-                            'What is your id number?\n->')
+                            '\nWhat is your id number?\n->')
     time_in = current_time()
     returning(dict_inventory, dict_log, number, time_in, i_d_guess, days)
     receipt(i_d_guess, dict_log, dict_inventory, number, time_in)
@@ -217,7 +235,7 @@ def admin(dict_inventory):
     print('Main Menu')
     option = input_choice(
         5,
-        '1. Add to inventory \n2. Delete from inventory \n3. Change or update inventory \n4. Clear history\n->'
+        '\n1. Add to inventory \n2. Delete from inventory \n3. Change or update inventory \n4. Clear history\n->'
     )
     if option == '1':
         add_to_inventory()
@@ -228,12 +246,12 @@ def admin(dict_inventory):
         change_inventory(dict_inventory)
     elif option == '4':
         clear = input_choice(
-            3, 'Are you sure you want to clear\n 1. Yes  2.No\n->')
+            3, '\nAre you sure you want to clear\n 1. Yes  2.No\n->')
         if clear == '1':
             clear_log()
-            print("==History Cleared==")
+            print("\n==History Cleared==\n")
         else:
-            print("Request Denied. Exiting...")
+            print("\nRequest Denied. Exiting...\n")
 
 
 def random_barcode_lines(length, height):
@@ -309,11 +327,11 @@ def main():
     dict_log = disk.open_log()
     print_intro()
     answer = input_choice(
-        4, 'Are you \n1. customer \n2. Employee \n3. Administrator?\n->')
+        4, '\nAre you \n1. customer \n2. Employee \n3. Administrator?\n->')
 
     if answer == '1':
-        in_out = input_choice(3,
-                              'Are you \n1. checking out \n2. returning?\n->')
+        in_out = input_choice(
+            3, '\nAre you \n1. checking out \n2. returning?\n->')
         make_pretty_inventory(dict_inventory)
         if in_out == '1':
             check_out(dict_inventory, dict_log)

@@ -32,16 +32,17 @@ def make_pretty_inventory(dict_inventory):
 
 def make_pretty_log(dict_log):
     for i in dict_log:
-        msg = '\n ID: {}, Name: {}, Days checked out: {}, Rent Charge: {}, \n\tTime checked out: {}, Time checked in: {}, Total: {}'.format(
-            dict_log[i]['id'], dict_log[i]['name'], dict_log[i]['days'],
-            dict_log[i]['rent charge'], dict_log[i]['time checked out'],
-            dict_log[i]['time checked in'], dict_log[i]['total'])
+        msg = '\n ID: {}, Name: {}, \n\tTransaction time: {}, Total: {}, Rent Status: {}'.format(
+            dict_log[i]['id'], dict_log[i]['name'], dict_log[i]['time'],
+            dict_log[i]['total'], dict_log[i]['rent status'])
         print(msg)
 
 
 def input_choice(number, string):
     while True:
         choice = input(string).strip()
+        if choice.lower() == 'q':
+            sys.exit()
         for i in range(1, number):
             if choice == str(i):
                 return choice
@@ -56,6 +57,8 @@ def input_choice(number, string):
 def input_word(string):
     while True:
         word = input(string)
+        if word.lower() == 'q':
+            sys.exit()
         word2 = ''.join(character for character in word
                         if character not in ' :.!?()#&*%1234567890')
         if word2.isalpha():
@@ -71,6 +74,8 @@ def input_word(string):
 def input_int(string):
     while True:
         number = input(string).strip()
+        if number.lower() == 'q':
+            sys.exit()
         if number.isdigit() and int(number) > 0:
             return int(number)
         else:
@@ -84,6 +89,8 @@ def input_int(string):
 def input_float(string):
     while True:
         number = input(string).strip()
+        if number.lower() == 'q':
+            sys.exit()
         if number.count('.') <= 1 and number.replace(
                 '.', '').isnumeric() and float(number) > 0:
             return float(number)
@@ -98,6 +105,8 @@ def input_float(string):
 def input_guess(dict_log, dict_inventory, number, string):
     while True:
         i_d_guess = input(string).strip()
+        if i_d_guess.lower() == 'q':
+            sys.exit()
         if core.check(
                 dict_log, i_d_guess
         ) and dict_inventory[number]['name'] == dict_log[i_d_guess]['name']:
@@ -168,27 +177,20 @@ def update_inventory(dict_inventory):
     disk.rewrite_inventory(dict_inventory)
 
 
-def append_log(dict_log, i_d, name, rent_charge, days, time_out, time_in,
-               total):
-    new_line = '\n' + str(i_d) + ', ' + str(name) + ', ' + str(
-        rent_charge) + ', ' + str(days) + ', ' + str(time_out) + ', ' + str(
-            time_in) + ', {0:.2f}'.format(total)
+def append_log(dict_log, i_d, name, total, time, rent_status):
+    new_line = '\n{}, {}, {}, {}, {}'.format(i_d, name, time, total,
+                                             rent_status)
     disk.append_log(new_line)
-
-
-def rewrite_log(dict_log, i_d, rent_charge, days, time_in, total):
-    new_log = core.log_line(dict_log, i_d, rent_charge, days, time_in, total)
-    disk.rewrite_log(new_log)
 
 
 def clear_log():
     disk.rewrite_log('')
 
 
-def rent_out(dict_inventory, dict_log, i_d, name, number, time_out, deposit):
+def rent_out(dict_inventory, dict_log, i_d, name, number, total, time):
     core.rent_out(dict_inventory, number)
     update_inventory(dict_inventory)
-    append_log(dict_log, i_d, name, 'N/A', 'N/A', time_out, 'N/A', deposit)
+    append_log(dict_log, i_d, name, total, time, 'check_out')
 
 
 def check_out(dict_inventory, dict_log):
@@ -198,24 +200,23 @@ def check_out(dict_inventory, dict_log):
             "\nWhich one would you like to check out\n->"))
     i_d = random_i_d(dict_log)
     name = dict_inventory[number]['name']
-    time_out = current_time()
+    time = current_time()
     if core.check_quantity(dict_inventory, number):
         deposit = core.deposit(dict_inventory, number)
-        dict_log = core.update_dict_log(dict_log, i_d, name, time_out)
-        rent_out(dict_inventory, dict_log, i_d, name, number, time_out,
-                 deposit)
-        receipt(i_d, dict_log, dict_inventory, number, time_out)
+        dict_log = core.update_dict_log(dict_log, i_d, name, deposit, time,
+                                        'check_out')
+        rent_out(dict_inventory, dict_log, i_d, name, number, deposit, time)
+        receipt(i_d, dict_log, dict_inventory, number, deposit, time,
+                'check_out')
     else:
         print('\nSorry, were out of that item\n')
 
 
-def returning(dict_inventory, dict_log, number, time_in, i_d_guess, days):
+def returning(dict_inventory, dict_log, number, time, i_d_guess, total):
     core.rent_in(dict_inventory, number)
     update_inventory(dict_inventory)
-    final_cost = core.final_cost(dict_inventory, number, days)
-    rent_charge = core.rent_cost(dict_inventory, number, days)
-    rewrite_log(dict_log, i_d_guess, rent_charge, days, time_in,
-                float(final_cost - core.deposit(dict_inventory, number)))
+    name = dict_inventory[number]['name']
+    append_log(dict_log, i_d_guess, name, total, time, 'check_in')
 
 
 def check_in(dict_inventory, dict_log):
@@ -225,10 +226,12 @@ def check_in(dict_inventory, dict_log):
             '\nWhich one are you returning?\n->'))
     days = input_int('\nHow many days did you rent it?\n->')
     i_d_guess = input_guess(dict_log, dict_inventory, number,
-                            '\nWhat is your id number?\n->')
-    time_in = current_time()
-    returning(dict_inventory, dict_log, number, time_in, i_d_guess, days)
-    receipt(i_d_guess, dict_log, dict_inventory, number, time_in)
+                            '\nWhat is your id number?(enter q to quit)\n->')
+    time = current_time()
+    final_cost = core.final_cost(dict_inventory, number, days)
+    returning(dict_inventory, dict_log, number, time, i_d_guess, final_cost)
+    receipt(i_d_guess, dict_log, dict_inventory, number, final_cost, time,
+            'check_out')
 
 
 def admin(dict_inventory):
@@ -272,7 +275,7 @@ def rand_numbers(length):
     return '\n║\t   ║'.join(line for _ in range(1))
 
 
-def receipt(i_d, dict_log, dict_inventory, number, date):
+def receipt(i_d, dict_log, dict_inventory, number, total, time, rent_status):
     '''str, float, float, str -> str'''
     code = random_barcode_lines(20, 2)
     print("\tHere is your receipt.\n\t😄Have a good day!😄\n")
@@ -286,25 +289,12 @@ def receipt(i_d, dict_log, dict_inventory, number, date):
     print("\t║Price per day:",
           str(dict_inventory[number]['price']).ljust(
               33 - len(str(dict_inventory[number]['price']))), "║")
-    print(
-        "\t║Days checked out:",
-        str(dict_log[i_d]['days']).ljust(30 - len(str(dict_log[i_d]['days']))),
-        "║")
-    print("\t║Rent Charge:",
-          str(dict_log[i_d]['rent charge']),
-          "".ljust(31 - len(str(dict_log[i_d]['rent charge']))), "║")
     print("\t║Sales Tax: 0.07                               ║")
-    print("\t║Total sales:",
-          str(dict_log[i_d]['total']),
-          ''.ljust(31 - len(str(dict_log[i_d]['total']))), "║")
+    print("\t║Total sales: {0:.2f}".format(total)), ''.ljust(
+        31 - len(str(total)), "║")
     print("\t║ID number:", str(i_d), ''.ljust(47 - len(str(id))), "║")
-    print("\t║Time checked out:",
-          str(dict_log[i_d]['time checked out']),
-          "".ljust(26 - len(str(dict_log[i_d]['time checked out']))), "║")
-    print("\t║Time checked in:",
-          str(dict_log[i_d]['time checked in']),
-          "".ljust(27 - len(str(dict_log[i_d]['time checked in']))), "║")
-    print("\t║Transaction time:", date, "".ljust(10), "║")
+    print("\t║Time:", str(time), ''.ljust(32), "║")
+    print("\t║Rent Status: ", str(rent_status))
     print("\t║----------------------------------------------║")
     print("\t║          ", code, "            ║")
     print("\t║          ", code, "            ║")
@@ -327,7 +317,9 @@ def main():
     dict_log = disk.open_log()
     print_intro()
     answer = input_choice(
-        4, '\nAre you \n1. customer \n2. Employee \n3. Administrator?\n->')
+        4,
+        '\nAre you \n1. customer \n2. Employee \n3. Administrator?\n(Enter q to quit at any time)\n->'
+    )
 
     if answer == '1':
         in_out = input_choice(

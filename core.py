@@ -1,16 +1,14 @@
 # all logical functions go here
 
 
-def update_dict_log(dict_log, i_d, name, time_out):
+def update_dict_log(dict_log, i_d, name, time, total, rent_status):
     '''({dict}, str, str, str) -> {dict}'''
     dict_log[i_d] = {
         'id': i_d,
         'name': name,
-        'days': 'N/A',
-        'rent charge': 'N/A',
-        'time checked out': time_out,
-        'time checked in': 'N/A',
-        'total': 'N/A'
+        'time ': time,
+        'total': 'N/A',
+        'rent status': rent_status
     }
     return dict_log
 

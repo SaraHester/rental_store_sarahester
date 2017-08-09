@@ -34,16 +34,13 @@ def make_log_dict(log):
     '''[] -> {}'''
     dict_log = {}
     for line in log:
-        i_d, name, days, rent_charge, time_out, time_in, total = line.strip(
-        ).split(', ')
+        i_d, name, time, total, rent_status = line.strip().split(', ')
         dict_log[str(i_d)] = {
             'id': i_d,
             'name': name,
-            'days': days,
-            'rent charge': rent_charge,
-            'time checked out': time_out,
-            'time checked in': time_in,
-            'total': total
+            'time': time,
+            'total': total,
+            'rent status': rent_status
         }
     return dict_log
 
@@ -54,11 +51,9 @@ def make_log_str(dict_log):
     for line in sorted(dict_log):
         str_log += '\n' + str(dict_log[line]['id']) + ', ' + str(
             dict_log[line]['name']) + ', ' + str(
-                dict_log[line]['days']) + ', ' + str(
-                    dict_log[line]['rent charge']) + ', ' + str(
-                        dict_log[line]['time checked out']) + ', ' + str(
-                            dict_log[line]['time checked in']) + ', ' + str(
-                                dict_log[line]['total'])
+                dict_log[line]['time']) + ', ' + str(
+                    dict_log[line]['total']) + ', ' + str(
+                        cict_log[line]['rent status'])
     return str_log
 
 

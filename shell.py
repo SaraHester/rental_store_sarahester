@@ -121,8 +121,9 @@ def input_guess(dict_log, dict_inventory, number, string):
 
 def check_inven_or_log(dict_inventory, dict_log):
     revenue = core.total_revenue(dict_log)
-    option = input(
-        'What do you want to do? \n1.Manage stock. \n2. Check history\n3. Check revenue\n->'
+    option = input_choice(
+        4,
+        'What do you want to do? \n1. Check inventory \n2. Check history\n3. Check revenue\n->'
     )
     if option == '1':
         make_pretty_inventory(dict_inventory)
@@ -283,21 +284,18 @@ def receipt(i_d, dict_log, dict_inventory, number, total, time, rent_status):
     print("\t╔══════════════════════════════════════════════╗")
     print("\t║                   GAME-FLIX                  ║")
     print("\t║----------------------------------------------║")
-    print("\t║Item:",
-          str(dict_inventory[number]['name']).ljust(
-              51 - len(str(dict_inventory[number]['name']))), "║")
-    print("\t║Price per day:",
-          str(dict_inventory[number]['price']).ljust(
-              33 - len(str(dict_inventory[number]['price']))), "║")
+    print(("\t║Item:" + str(dict_inventory[number]['name'])).ljust(47), "║")
+    print(
+        ("\t║Price per day:" + str(dict_inventory[number]['price'])).ljust(47),
+        "║")
     print("\t║Sales Tax: 0.07                               ║")
-    print("\t║Total sales: {0:.2f}".format(total)), ''.ljust(
-        31 - len(str(total)), "║")
-    print("\t║ID number:", str(i_d), ''.ljust(47 - len(str(id))), "║")
-    print("\t║Time:", str(time), ''.ljust(32), "║")
-    print("\t║Rent Status: ", str(rent_status))
+    print(("\t║Total sales: {0:.2f}".format(total)).ljust(47), "║")
+    print(("\t║ID number:" + str(i_d)).ljust(47), "║")
+    print(("\t║Time:" + str(time)).ljust(47), "║")
+    print(("\t║Rent Status:" + str(rent_status)).ljust(47), "║")
     print("\t║----------------------------------------------║")
-    print("\t║          ", code, "            ║")
-    print("\t║          ", code, "            ║")
+    print("\t║          ", code, "              ║")
+    print("\t║          ", code, "              ║")
     print("\t║          ", rand_numbers(20), "              ║")
     print("\t║                                              ║")
     print("\t║                                              ║")
@@ -305,7 +303,7 @@ def receipt(i_d, dict_log, dict_inventory, number, total, time, rent_status):
     print("\t║                                              ║")
     print("\t║EARN YOUR CHANCE AT $500!!!!!                 ║")
     print("\t║`just go to the link below`                   ║")
-    print("\t║www.earnfreemoney.org                         ║")
+    print("\t║www.earnfreemoney.com                         ║")
     print("\t║==============================================║")
     print("\t╚══════════════════════════════════════════════╝")
     print("\n")
